@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface GalleryImage {
   src: string;
@@ -19,6 +20,7 @@ const galleryImages: GalleryImage[] = [
 ];
 
 export const Gallery: React.FC = () => {
+  const { t } = useLanguage();
 
   return (
     <section id="gallery" className="py-20 px-4">
@@ -31,10 +33,10 @@ export const Gallery: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            Gallery
+            {t.ui.gallery}
           </h2>
           <p className="text-xl text-text/80 max-w-3xl mx-auto">
-            Moments captured from performances around the world. Each image tells a story of energy, connection, and pure musical magic.
+            {t.ui.momentsCapturedFromPerformances}
           </p>
         </motion.div>
 
@@ -77,10 +79,10 @@ export const Gallery: React.FC = () => {
           >
             <div className="glass p-12 rounded-2xl text-center backdrop-blur-md border border-white/20">
               <h3 className="font-display text-6xl md:text-8xl font-bold gradient-text mb-4">
-                COMING SOON
+                {t.ui.comingSoon}
               </h3>
               <p className="text-xl text-text/80 max-w-md mx-auto">
-                Gallery photos are being prepared. Check back soon for amazing visuals from LÜMEN's performances!
+                {t.ui.galleryPhotosBeingPrepared}
               </p>
             </div>
           </motion.div>

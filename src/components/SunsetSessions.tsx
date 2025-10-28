@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
-import { siteConfig } from '../site.config';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface YouTubeEmbedProps {
   videoId: string;
@@ -59,6 +59,8 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId, title, index }) =>
 };
 
 export const SunsetSessions: React.FC = () => {
+  const { t } = useLanguage();
+  
   const sunsetVideoTitles = [
     'Sunset Sessions Vol. 3 — LÜMEN',
     'Sunset Session Vol. 4 — Live on Segovia\'s Ancient City Walls'
@@ -75,10 +77,10 @@ export const SunsetSessions: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            {siteConfig.content.sunset.title}
+            {t.content.sunset.title}
           </h2>
           <div className="max-w-4xl mx-auto space-y-6">
-            {siteConfig.content.sunset.description.map((paragraph, index) => (
+            {t.content.sunset.description.map((paragraph: string, index: number) => (
               <motion.p
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -94,7 +96,7 @@ export const SunsetSessions: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {siteConfig.videos.sunset.map((videoId, index) => (
+          {t.videos.sunset.map((videoId: string, index: number) => (
             <YouTubeEmbed
               key={videoId}
               videoId={videoId}
@@ -113,7 +115,7 @@ export const SunsetSessions: React.FC = () => {
         >
           <div className="glass p-8 rounded-2xl text-center">
             <h3 className="font-display text-2xl font-bold text-accent mb-4">
-              Perfect for Your Event
+              {t.ui.perfectForYourEvent}
             </h3>
             <p className="text-text/80 mb-6">
               Sunset Sessions are ideal for outdoor venues, rooftop parties, beach clubs, and intimate gatherings 
@@ -121,10 +123,10 @@ export const SunsetSessions: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105">
-                Book Sunset Session
+                {t.ui.bookSunsetSession}
               </button>
               <button className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105">
-                Learn More
+                {t.ui.learnMore}
               </button>
             </div>
           </div>

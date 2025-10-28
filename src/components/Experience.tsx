@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
-import { siteConfig } from '../site.config';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Experience: React.FC = () => {
+  const { t } = useLanguage();
+  
   return (
     <section id="experience" className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
@@ -21,7 +23,7 @@ export const Experience: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {siteConfig.content.experience.map((highlight, index) => (
+          {t.content.experience.map((highlight: string, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -47,7 +49,7 @@ export const Experience: React.FC = () => {
         >
           <div className="glass p-8 rounded-2xl max-w-4xl mx-auto">
             <h3 className="font-display text-2xl font-bold text-accent mb-6">
-              Ready to Create Magic Together?
+              {t.ui.readyToCreateMagic}
             </h3>
             <p className="text-text/80 mb-8 text-lg">
               Whether it's an intimate club night, a house party, or a special sunset, 
@@ -55,10 +57,10 @@ export const Experience: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105">
-                Book Now
+                {t.ui.bookNow}
               </button>
               <button className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105">
-                View Tech Requirements
+                {t.ui.viewTechRequirements}
               </button>
             </div>
           </div>

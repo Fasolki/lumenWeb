@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import { Download, FileText, Wifi, Volume2, Zap } from 'lucide-react';
-import { siteConfig } from '../site.config';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Tech: React.FC = () => {
+  const { t } = useLanguage();
+  
   const handleDownloadRider = () => {
     // TODO: Replace with actual rider PDF URL
     const link = document.createElement('a');
-    link.href = siteConfig.content.tech.riderUrl;
+    link.href = t.content.tech.riderUrl;
     link.download = 'lumen-tech-rider.pdf';
     link.target = '_blank';
     document.body.appendChild(link);
@@ -25,10 +27,10 @@ export const Tech: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            Tech Requirements
+            {t.ui.techRequirements}
           </h2>
           <p className="text-xl text-text/80 max-w-3xl mx-auto">
-            Professional setup requirements and technical specifications for optimal performance quality.
+            {t.ui.professionalSetupRequirements}
           </p>
         </motion.div>
 
@@ -43,17 +45,17 @@ export const Tech: React.FC = () => {
           >
             <div className="glass p-8 rounded-2xl">
               <h3 className="font-display text-2xl font-bold text-accent mb-6">
-                Professional Setup
+                {t.ui.professionalSetup}
               </h3>
               <p className="text-text/90 leading-relaxed mb-6">
-                {siteConfig.content.tech.description}
+                {t.content.tech.description}
               </p>
               <button
                 onClick={handleDownloadRider}
                 className="inline-flex items-center px-6 py-3 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
               >
                 <Download size={20} className="mr-2" />
-                Download Technical Rider
+                {t.ui.downloadTechnicalRider}
               </button>
             </div>
           </motion.div>
@@ -68,7 +70,7 @@ export const Tech: React.FC = () => {
           >
             <div className="glass p-8 rounded-2xl">
               <h3 className="font-display text-2xl font-bold text-accent mb-6">
-                Equipment Overview
+                {t.ui.equipmentOverview}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">
@@ -166,11 +168,10 @@ export const Tech: React.FC = () => {
         >
           <div className="glass p-8 rounded-2xl max-w-2xl mx-auto">
             <h3 className="font-display text-2xl font-bold text-accent mb-4">
-              Technical Questions?
+              {t.ui.technicalQuestions}
             </h3>
             <p className="text-text/80 mb-6">
-              Have specific technical requirements or questions about the setup? 
-              Get in touch to discuss your venue's needs and requirements.
+              {t.ui.haveSpecificTechnicalRequirements}
             </p>
             <button 
               onClick={() => {
@@ -181,7 +182,7 @@ export const Tech: React.FC = () => {
               }}
               className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
             >
-              Contact for Technical Details
+              {t.ui.contactForTechnicalDetails}
             </button>
           </div>
         </motion.div>

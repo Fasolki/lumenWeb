@@ -73,6 +73,10 @@ export interface Translations {
     minimumHours: string;
     technicalRequirementsConfirmed: string;
     backupEquipmentContingency: string;
+    comingSoon: string;
+    galleryPhotosBeingPrepared: string;
+    momentsCapturedFromPerformances: string;
+    haveSpecificTechnicalRequirements: string;
     footer: {
       tagline: string;
       description: string;
@@ -186,6 +190,10 @@ export const translations: Record<'en' | 'es', Translations> = {
       minimumHours: 'Minimum 2 hours for sound check and equipment setup',
       technicalRequirementsConfirmed: 'Technical requirements must be confirmed 24 hours prior',
       backupEquipmentContingency: 'Always have backup equipment and contingency plans',
+      comingSoon: 'COMING SOON',
+      galleryPhotosBeingPrepared: 'Gallery photos are being prepared. Check back soon for amazing visuals from LÜMEN\'s performances!',
+      momentsCapturedFromPerformances: 'Moments captured from performances around the world. Each image tells a story of energy, connection, and pure musical magic.',
+      haveSpecificTechnicalRequirements: 'Have specific technical requirements or questions about the setup? Get in touch to discuss your venue\'s needs and requirements.',
       footer: {
         tagline: 'DJ LÜMEN',
         description: 'Bringing the energy that moves your soul. Professional DJ services for events worldwide.',
@@ -297,6 +305,10 @@ export const translations: Record<'en' | 'es', Translations> = {
       minimumHours: 'Mínimo 2 horas para prueba de sonido y configuración del equipo',
       technicalRequirementsConfirmed: 'Los requisitos técnicos deben confirmarse 24 horas antes',
       backupEquipmentContingency: 'Siempre tener equipo de respaldo y planes de contingencia',
+      comingSoon: 'PRÓXIMAMENTE',
+      galleryPhotosBeingPrepared: 'Las fotos de la galería se están preparando. ¡Vuelve pronto para ver increíbles visuales de las presentaciones de LÜMEN!',
+      momentsCapturedFromPerformances: 'Momentos capturados de presentaciones alrededor del mundo. Cada imagen cuenta una historia de energía, conexión y pura magia musical.',
+      haveSpecificTechnicalRequirements: '¿Tienes requisitos técnicos específicos o preguntas sobre la configuración? Ponte en contacto para discutir las necesidades y requisitos de tu lugar.',
       footer: {
         tagline: 'DJ LÜMEN',
         description: 'Llevando la energía que mueve tu alma. Servicios profesionales de DJ para eventos en todo el mundo.',

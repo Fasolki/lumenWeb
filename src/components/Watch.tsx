@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
-import { siteConfig } from '../site.config';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface YouTubeEmbedProps {
   videoId: string;
@@ -59,6 +59,8 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId, title, index }) =>
 };
 
 export const Watch: React.FC = () => {
+  const { t } = useLanguage();
+  
   const videoTitles = [
     'Sunset Session Vol. 4 — Live on Segovia\'s Ancient City Walls',
     'Sunset Sessions Vol. 3 — LÜMEN',
@@ -77,7 +79,7 @@ export const Watch: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            Watch & Listen
+            {t.ui.watch}
           </h2>
           <p className="text-xl text-text/80 max-w-3xl mx-auto">
             Experience the energy and artistry of LÜMEN through these featured performances and mixes.
@@ -85,7 +87,7 @@ export const Watch: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {siteConfig.videos.featured.map((videoId, index) => (
+          {t.videos.featured.map((videoId: string, index: number) => (
             <YouTubeEmbed
               key={videoId}
               videoId={videoId}
@@ -103,13 +105,13 @@ export const Watch: React.FC = () => {
           className="mt-16 text-center"
         >
           <a
-            href={siteConfig.social.youtube}
+            href={t.social.youtube}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
           >
             <Play size={20} className="mr-2" />
-            View More on YouTube
+            {t.ui.viewMoreOnYouTube}
           </a>
         </motion.div>
       </div>

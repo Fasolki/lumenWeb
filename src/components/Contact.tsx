@@ -1,14 +1,16 @@
 import { motion } from 'framer-motion';
 import { Mail, MessageCircle, Youtube, Instagram, Music } from 'lucide-react';
-import { siteConfig } from '../site.config';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Contact: React.FC = () => {
+  const { t } = useLanguage();
+  
   const handleEmailClick = () => {
-    window.location.href = `mailto:${siteConfig.contact.email}`;
+    window.location.href = `mailto:${t.contact.email}`;
   };
 
   const handleWhatsAppClick = () => {
-    window.open(`https://wa.me/${siteConfig.contact.whatsapp}`, '_blank');
+    window.open(`https://wa.me/${t.contact.whatsapp}`, '_blank');
   };
 
   const handleSocialClick = (url: string, isActive: boolean) => {
@@ -28,10 +30,10 @@ export const Contact: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            Contact & Booking
+            {t.ui.contactBooking}
           </h2>
           <p className="text-xl text-text/80 max-w-3xl mx-auto">
-            Ready to bring the LÜMEN experience to your event? Get in touch to discuss bookings, collaborations, or just to say hello.
+            {t.ui.readyToBringExperience}
           </p>
         </motion.div>
 
@@ -55,7 +57,7 @@ export const Contact: React.FC = () => {
                 For bookings, collaborations, and general inquiries
               </p>
               <p className="text-accent font-semibold text-lg">
-                {siteConfig.contact.email}
+                {t.contact.email}
               </p>
             </button>
           </motion.div>
@@ -78,7 +80,7 @@ export const Contact: React.FC = () => {
                 Quick messages and urgent bookings
               </p>
               <p className="text-accent font-semibold text-lg">
-                {siteConfig.contact.whatsapp}
+                {t.contact.whatsapp}
               </p>
             </button>
           </motion.div>
@@ -93,12 +95,12 @@ export const Contact: React.FC = () => {
           className="text-center mb-16"
         >
           <h3 className="font-display text-3xl font-bold text-text mb-8">
-            Follow the Journey
+            {t.ui.followTheJourney}
           </h3>
           <div className="flex justify-center space-x-6">
             {/* YouTube - Active */}
             <button
-              onClick={() => handleSocialClick(siteConfig.social.youtube, true)}
+              onClick={() => handleSocialClick(t.social.youtube, true)}
               className="glass p-4 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring group"
               aria-label="Visit YouTube channel"
             >
@@ -107,7 +109,7 @@ export const Contact: React.FC = () => {
 
             {/* Instagram - Disabled */}
             <button
-              onClick={() => handleSocialClick(siteConfig.social.instagram, false)}
+              onClick={() => handleSocialClick(t.social.instagram, false)}
               className="glass p-4 rounded-full opacity-50 cursor-not-allowed"
               aria-disabled="true"
               aria-label="Instagram coming soon"
@@ -119,7 +121,7 @@ export const Contact: React.FC = () => {
 
             {/* TikTok - Disabled */}
             <button
-              onClick={() => handleSocialClick(siteConfig.social.tiktok, false)}
+              onClick={() => handleSocialClick(t.social.tiktok, false)}
               className="glass p-4 rounded-full opacity-50 cursor-not-allowed"
               aria-disabled="true"
               aria-label="TikTok coming soon"
@@ -130,7 +132,7 @@ export const Contact: React.FC = () => {
             </button>
           </div>
           <p className="text-text/60 text-sm mt-4">
-            Instagram & TikTok coming soon
+            {t.ui.instagramTiktokComingSoon}
           </p>
         </motion.div>
 
