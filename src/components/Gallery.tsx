@@ -71,40 +71,52 @@ export const Gallery: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {galleryImages.map((image, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group"
-              onClick={() => openLightbox(index)}
-            >
-              <div className="w-full h-full bg-surface rounded-lg overflow-hidden">
-                <div
-                  className="w-full h-full bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
-                  style={{
-                    backgroundImage: `url(${image.src})`,
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="glass p-3 rounded-full">
-                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                      <div className="w-0 h-0 border-l-4 border-l-white border-y-4 border-y-transparent ml-1" />
-                    </div>
+        <div className="relative">
+          {/* Blurred Gallery Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 filter blur-sm pointer-events-none">
+            {galleryImages.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="relative aspect-square rounded-lg overflow-hidden"
+              >
+                <div className="w-full h-full bg-surface rounded-lg overflow-hidden">
+                  <div
+                    className="w-full h-full bg-cover bg-center"
+                    style={{
+                      backgroundImage: `url(${image.src})`,
+                    }}
+                  />
+                </div>
+                {image.caption && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                    <p className="text-white text-sm font-medium">{image.caption}</p>
                   </div>
-                </div>
-              </div>
-              {image.caption && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <p className="text-white text-sm font-medium">{image.caption}</p>
-                </div>
-              )}
-            </motion.div>
-          ))}
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Coming Soon Overlay */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div className="glass p-12 rounded-2xl text-center backdrop-blur-md border border-white/20">
+              <h3 className="font-display text-6xl md:text-8xl font-bold gradient-text mb-4">
+                COMING SOON
+              </h3>
+              <p className="text-xl text-text/80 max-w-md mx-auto">
+                Gallery photos are being prepared. Check back soon for amazing visuals from LÜMEN's performances!
+              </p>
+            </div>
+          </motion.div>
         </div>
 
         {/* Lightbox */}
