@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface GalleryImage {
   src: string;
@@ -21,37 +19,6 @@ const galleryImages: GalleryImage[] = [
 ];
 
 export const Gallery: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
-
-  const openLightbox = (index: number) => {
-    setSelectedImage(index);
-  };
-
-  const closeLightbox = () => {
-    setSelectedImage(null);
-  };
-
-  const nextImage = () => {
-    if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % galleryImages.length);
-    }
-  };
-
-  const prevImage = () => {
-    if (selectedImage !== null) {
-      setSelectedImage((selectedImage - 1 + galleryImages.length) % galleryImages.length);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      closeLightbox();
-    } else if (e.key === 'ArrowRight') {
-      nextImage();
-    } else if (e.key === 'ArrowLeft') {
-      prevImage();
-    }
-  };
 
   return (
     <section id="gallery" className="py-20 px-4">
@@ -119,79 +86,6 @@ export const Gallery: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Lightbox */}
-        <AnimatePresence>
-          {selectedImage !== null && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
-              onClick={closeLightbox}
-              onKeyDown={handleKeyDown}
-              tabIndex={-1}
-            >
-              <div className="relative max-w-6xl max-h-full">
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.8, opacity: 0 }}
-                  className="relative"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src={galleryImages[selectedImage].src}
-                    alt={galleryImages[selectedImage].alt}
-                    className="max-w-full max-h-[80vh] object-contain rounded-lg"
-                  />
-                  {galleryImages[selectedImage].caption && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-lg">
-                      <p className="text-white text-lg font-medium">
-                        {galleryImages[selectedImage].caption}
-                      </p>
-                    </div>
-                  )}
-                </motion.div>
-
-                {/* Close button */}
-                <button
-                  onClick={closeLightbox}
-                  className="absolute top-4 right-4 glass p-3 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring"
-                  aria-label="Close lightbox"
-                >
-                  <X size={24} className="text-white" />
-                </button>
-
-                {/* Navigation buttons */}
-                {galleryImages.length > 1 && (
-                  <>
-                    <button
-                      onClick={prevImage}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 glass p-3 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring"
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft size={24} className="text-white" />
-                    </button>
-                    <button
-                      onClick={nextImage}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 glass p-3 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring"
-                      aria-label="Next image"
-                    >
-                      <ChevronRight size={24} className="text-white" />
-                    </button>
-                  </>
-                )}
-
-                {/* Image counter */}
-                <div className="absolute top-4 left-4 glass px-4 py-2 rounded-full">
-                  <span className="text-white text-sm font-medium">
-                    {selectedImage + 1} / {galleryImages.length}
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );
