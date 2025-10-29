@@ -131,8 +131,8 @@ export const translations: Record<'en' | 'es', Translations> = {
         subtitle: 'Organic Afro-Tech | Jungle Rhythms | Deep House'
       },
       about: [
-        'I\'m LÜMEN, a DJ out of Mexico, blending Organic Afro-Tech, some Jungle Rhythms, and Deep House. I started my journey about three years ago in my bedroom, inspired by local artists like CARRILLO. B and the inherent lack of good music in parties.',
-        'Since then, I\'ve played in many house parties, private events, and public showcases. My main project as of right now - Sunset Sessions - is a series of live sets played in public spaces that I later edit and upload to YouTube. My goal with every performance, whether public or private, is to create a positive atmosphere, one where the drinks go down smooth and the vibes stay positive.'
+        'LÜMEN delivers sleek, energetic sets that bridge Afro-Tech, Jungle House, Deep House, and more. Having started over three years ago in his bedroom he is shaped by artists like CARRILLO. B, Hugel, Fred Again, Badbwoy, etc.',
+        'He now brings a polished, crowd-first approach to clubs, showcases, and private rooms.',
       ],
       sunset: {
         title: 'Sunset Sessions',
@@ -243,14 +243,14 @@ export const translations: Record<'en' | 'es', Translations> = {
     content: {
       hero: {
         tagline: 'LÜMEN',
-        subtitle: 'Afro-Tech Orgánico | Ritmos Jungle | Deep House'
+        subtitle: 'Organic Afro-Tech | Jungle Rhythms | Deep House'
       },
       about: [
-        'Soy LÜMEN, un DJ de México, mezclando Afro-Tech Orgánico, algunos Ritmos Jungle y Deep House. Comencé mi viaje hace aproximadamente tres años en mi habitación, inspirado por artistas locales como CARRILLO. B y la falta inherente de buena música en las fiestas.',
-        'Desde entonces, he tocado en muchas fiestas privadas, eventos privados y presentaciones públicas. Mi proyecto principal en este momento - Sunset Sessions - es una serie de sets en vivo tocados en espacios públicos que luego edito y subo a YouTube. Mi objetivo con cada presentación, ya sea pública o privada, es crear una atmósfera positiva, una donde las bebidas bajen suaves y las vibras se mantengan positivas.'
+        'LÜMEN ofrece sets elegantes y enérgicos que combinan Afro-Tech, Jungle House, Deep House y mucho más. Comenzó hace más de tres años en su dormitorio y ha recibido la influencia de artistas como CARRILLO. B, Hugel, Fred Again, Badbwoy, etc.',
+        'Ahora aporta un enfoque pulido y centrado en el público a clubes, showcases y salas privadas'
       ],
       sunset: {
-        title: 'Sesiones Sunset',
+        title: 'Sunset Sessions',
         description: [
           'Mezclas en vivo al aire libre grabadas en España y compartidas en YouTube; Afro-Tech y House Orgánico con ambiente natural.',
           'Mi proyecto principal con presentaciones íntimas en espacios públicos, creando atmósferas positivas donde las bebidas bajen suaves y las vibras se mantengan positivas.'
@@ -274,7 +274,7 @@ export const translations: Record<'en' | 'es', Translations> = {
       watch: 'Ver',
       aboutMe: 'Acerca de Mí',
       viewMoreOnYouTube: 'Ver Más en YouTube',
-      bookSunsetSession: 'Reservar Sesión Sunset',
+      bookSunsetSession: 'Reservar Sunset Session',
       learnMore: 'Saber Más',
       perfectForYourEvent: 'Perfecto para Tu Evento',
       readyToCreateMagic: '¿Listo para Crear Magia Juntos?',
