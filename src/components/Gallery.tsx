@@ -9,11 +9,11 @@ interface GalleryImage {
 
 // TODO: Replace with actual gallery images
 const galleryImages: GalleryImage[] = [
-  { src: '/images/gallery/performance-1.jpg', alt: 'LÜMEN performing at festival', caption: 'Electric Daisy Carnival 2024' },
+  { src: '/images/gallery/halloween2025_1.jpg', alt: 'House Party Halloween 2025', caption: 'Halloween 2025 House Party' },
   { src: '/images/gallery/crowd-1.jpg', alt: 'Energized crowd dancing', caption: 'Tomorrowland Main Stage' },
   { src: '/images/gallery/performance-2.jpg', alt: 'LÜMEN behind the decks', caption: 'Berghain Berlin' },
   { src: '/images/gallery/crowd-2.jpg', alt: 'Crowd at sunset session', caption: 'Sunset Session Ibiza' },
-  { src: '/images/gallery/performance-3.jpg', alt: 'LÜMEN mixing live', caption: 'Ultra Music Festival' },
+  { src: '/images/gallery/halloween2025_2.jpg', alt: 'LÜMEN mixing live at house party', caption: 'House Party Halloween 2025' },
   { src: '/images/gallery/crowd-3.jpg', alt: 'Festival crowd energy', caption: 'Coachella Weekend 2' },
   { src: '/images/gallery/performance-4.jpg', alt: 'Intimate club performance', caption: 'Fabric London' },
   { src: '/images/gallery/crowd-4.jpg', alt: 'Rooftop party crowd', caption: 'Rooftop Session NYC' },

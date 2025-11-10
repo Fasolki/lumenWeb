@@ -65,7 +65,7 @@ export const Watch: React.FC = () => {
     'Sunset Session Vol. 4 — Live on Segovia\'s Ancient City Walls',
     'Sunset Sessions Vol. 3 — LÜMEN',
     'Afro & Deep House | LÜMEN Sunset Sessions Vol.2',
-    'LÜMEN - Sunset Vibes | Deep House & Afro House DJ Set'
+    'LÜMEN - Halloween 🎃 Night Mix'
   ];
 
   return (

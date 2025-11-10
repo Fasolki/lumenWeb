@@ -62,7 +62,7 @@ export const SunsetSessions: React.FC = () => {
   const { t } = useLanguage();
   
   const sunsetVideoTitles = [
-    'Sunset Sessions Vol. 3 — LÜMEN',
+    'Afro House • Deep House | Sunset Session Vol. 5 [Recorded Live - 2025]',
     'Sunset Session Vol. 4 — Live on Segovia\'s Ancient City Walls'
   ];
 

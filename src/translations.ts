@@ -102,10 +102,10 @@ export const translations: Record<'en' | 'es', Translations> = {
         'gCTGzejY9Rg',
         'YLLrNYGTOL0',
         'g12m8rw-CWs',
-        'cj4vF98p_I0'
+        'DPMY-jVmAk8'
       ],
       sunset: [
-        'YLLrNYGTOL0',
+        'BlQOyqiI_zs',
         'gCTGzejY9Rg'
       ]
     },
@@ -217,10 +217,10 @@ export const translations: Record<'en' | 'es', Translations> = {
         'gCTGzejY9Rg',
         'YLLrNYGTOL0',
         'g12m8rw-CWs',
-        'cj4vF98p_I0'
+        'DPMY-jVmAk8'
       ],
       sunset: [
-        'YLLrNYGTOL0',
+        'BlQOyqiI_zs',
         'gCTGzejY9Rg'
       ]
     },

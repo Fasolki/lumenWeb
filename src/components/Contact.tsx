@@ -152,7 +152,6 @@ export const Contact: React.FC = () => {
               <h4 className="font-semibold text-text mb-3">What to Expect</h4>
               <ul className="space-y-2 text-text/80">
                 <li>• Professional DJ setup</li>
-                <li>• Custom lighting rig</li>
                 <li>• Genre flexibility</li>
                 <li>• Pre-event consultation</li>
               </ul>
