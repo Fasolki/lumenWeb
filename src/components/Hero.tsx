@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { scrollToEmail } from '../utils/scroll';
 
 interface CarouselImage {
   src: string;
@@ -157,7 +158,7 @@ export const Hero: React.FC = () => {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
-              onClick={() => scrollToSection('#contact')}
+              onClick={scrollToEmail}
               className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
             >
               {t.ui.bookContact}

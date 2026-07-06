@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
+import { scrollToEmail } from '../utils/scroll';
 
 export const Experience: React.FC = () => {
   const { t } = useLanguage();
@@ -56,7 +57,10 @@ export const Experience: React.FC = () => {
               LÜMEN brings the same passion and energy to every performance. Let's create something unforgettable together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105">
+              <button
+                onClick={scrollToEmail}
+                className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
+              >
                 {t.ui.bookNow}
               </button>
               <button className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105">

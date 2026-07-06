@@ -2,6 +2,7 @@ import { ThemeController } from './components/ThemeController';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
+import { QuickContact } from './components/QuickContact';
 import { About } from './components/About';
 import { Watch } from './components/Watch';
 import { SunsetSessions } from './components/SunsetSessions';
@@ -20,6 +21,7 @@ function App() {
           <main>
             <Hero />
             <About />
+            <QuickContact />
             <Watch />
             <SunsetSessions />
             <Experience />
@@ -47,14 +49,6 @@ function App() {
                   className="text-text/80 hover:text-accent transition-colors duration-200"
                 >
                   lifeonfullvolume@gmail.com
-                </a>
-                <a 
-                  href="https://wa.me/+16507144540"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-text/80 hover:text-accent transition-colors duration-200"
-                >
-                  +1 (650) 714-4540
                 </a>
               </div>
               

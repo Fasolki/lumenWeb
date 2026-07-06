@@ -10,7 +10,7 @@ export const Contact: React.FC = () => {
   };
 
   const handleWhatsAppClick = () => {
-    window.open(`https://wa.me/${t.contact.whatsapp}`, '_blank');
+    window.open(`https://wa.me/${t.contact.whatsapp.replace(/\D/g, '')}`, '_blank');
   };
 
   const handleSocialClick = (url: string, isActive: boolean) => {
@@ -40,6 +40,7 @@ export const Contact: React.FC = () => {
         {/* Main Action Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           <motion.div
+            id="contact-email"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -66,7 +67,7 @@ export const Contact: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
           >
             <button
               onClick={handleWhatsAppClick}
@@ -77,10 +78,10 @@ export const Contact: React.FC = () => {
                 <h3 className="font-display text-2xl font-bold text-text">WhatsApp</h3>
               </div>
               <p className="text-text/80 mb-4">
-                Quick messages and urgent bookings
+                Quick messages and urgent bookings via WhatsApp
               </p>
               <p className="text-accent font-semibold text-lg">
-                {t.contact.whatsapp}
+                +34 665232662
               </p>
             </button>
           </motion.div>
@@ -107,16 +108,13 @@ export const Contact: React.FC = () => {
               <Youtube size={24} className="text-accent group-hover:scale-110 transition-transform duration-200" />
             </button>
 
-            {/* Instagram - Disabled */}
+            {/* Instagram - Active */}
             <button
-              onClick={() => handleSocialClick(t.social.instagram, false)}
-              className="glass p-4 rounded-full opacity-50 cursor-not-allowed"
-              aria-disabled="true"
-              aria-label="Instagram coming soon"
-              title="Coming soon"
-              disabled
+              onClick={() => handleSocialClick(t.social.instagram, true)}
+              className="glass p-4 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring group"
+              aria-label="Visit Instagram profile"
             >
-              <Instagram size={24} className="text-text/50" />
+              <Instagram size={24} className="text-accent group-hover:scale-110 transition-transform duration-200" />
             </button>
 
             {/* TikTok - Disabled */}
@@ -160,7 +158,7 @@ export const Contact: React.FC = () => {
               <h4 className="font-semibold text-text mb-3">Response Time</h4>
               <ul className="space-y-2 text-text/80">
                 <li>• Email: Within 24 hours</li>
-                <li>• WhatsApp: Within 2 hours</li>
+                <li>• WhatsApp: Within a few hours</li>
                 <li>• Urgent bookings: Same day</li>
                 <li>• Weekend inquiries: Monday</li>
               </ul>

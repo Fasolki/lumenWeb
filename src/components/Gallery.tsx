@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -7,20 +8,89 @@ interface GalleryImage {
   caption?: string;
 }
 
-// TODO: Replace with actual gallery images
-const galleryImages: GalleryImage[] = [
-  { src: '/images/gallery/halloween2025_1.jpg', alt: 'House Party Halloween 2025', caption: 'Halloween 2025 House Party' },
-  { src: '/images/gallery/crowd-1.jpg', alt: 'Energized crowd dancing', caption: 'Tomorrowland Main Stage' },
-  { src: '/images/gallery/performance-2.jpg', alt: 'LÜMEN behind the decks', caption: 'Berghain Berlin' },
-  { src: '/images/gallery/crowd-2.jpg', alt: 'Crowd at sunset session', caption: 'Sunset Session Ibiza' },
-  { src: '/images/gallery/halloween2025_2.jpg', alt: 'LÜMEN mixing live at house party', caption: 'House Party Halloween 2025' },
-  { src: '/images/gallery/crowd-3.jpg', alt: 'Festival crowd energy', caption: 'Coachella Weekend 2' },
-  { src: '/images/gallery/performance-4.jpg', alt: 'Intimate club performance', caption: 'Fabric London' },
-  { src: '/images/gallery/crowd-4.jpg', alt: 'Rooftop party crowd', caption: 'Rooftop Session NYC' },
-];
+const ROTATE_INTERVAL_MS = 24 * 60 * 60 * 1000;
+const STORAGE_KEY = 'lumen-gallery-state-v1';
+const GALLERY_SLOTS = 8;
+
+const galleryFileMap = import.meta.glob('/public/images/gallery/*.{jpg,jpeg,JPG,JPEG,png,PNG,webp,WEBP,avif,AVIF}', {
+  eager: true,
+  query: '?url',
+  import: 'default'
+}) as Record<string, string>;
+
+const allGalleryImages: GalleryImage[] = Object.entries(galleryFileMap).map(([filePath, resolvedUrl]) => {
+  const fileName = filePath.split('/').pop() ?? 'gallery-image';
+  return {
+    src: resolvedUrl,
+    alt: `LUMEN gallery image ${fileName}`,
+  };
+});
+
+const getShuffledIndices = (count: number): number[] => {
+  const indices = Array.from({ length: count }, (_, i) => i);
+  for (let i = indices.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return indices;
+};
+
+const getActiveImages = (): GalleryImage[] => {
+  if (allGalleryImages.length === 0) {
+    return [];
+  }
+
+  const now = Date.now();
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as { shuffledIndices: number[]; shuffledAt: number };
+      const isStillFresh = now - parsed.shuffledAt < ROTATE_INTERVAL_MS;
+      const indicesAreValid = Array.isArray(parsed.shuffledIndices)
+        && parsed.shuffledIndices.every((idx) => Number.isInteger(idx) && idx >= 0 && idx < allGalleryImages.length);
+
+      if (isStillFresh && indicesAreValid) {
+        const selected = parsed.shuffledIndices.slice(0, GALLERY_SLOTS).map((idx) => allGalleryImages[idx]).filter(Boolean);
+        if (selected.length > 0) {
+          return selected.length >= GALLERY_SLOTS
+            ? selected
+            : Array.from({ length: GALLERY_SLOTS }, (_, i) => selected[i % selected.length]);
+        }
+      }
+    }
+  } catch {
+    // Ignore corrupted localStorage state and regenerate below.
+  }
+
+  const shuffledIndices = getShuffledIndices(allGalleryImages.length);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ shuffledIndices, shuffledAt: now }));
+  const selected = shuffledIndices.slice(0, GALLERY_SLOTS).map((idx) => allGalleryImages[idx]).filter(Boolean);
+  return selected.length >= GALLERY_SLOTS
+    ? selected
+    : Array.from({ length: GALLERY_SLOTS }, (_, i) => selected[i % selected.length]);
+};
 
 export const Gallery: React.FC = () => {
   const { t } = useLanguage();
+  const fallbackImages = useMemo(() => {
+    if (allGalleryImages.length === 0) {
+      return [];
+    }
+    return allGalleryImages.length >= GALLERY_SLOTS
+      ? allGalleryImages.slice(0, GALLERY_SLOTS)
+      : Array.from({ length: GALLERY_SLOTS }, (_, i) => allGalleryImages[i % allGalleryImages.length]);
+  }, []);
+  const [visibleImages, setVisibleImages] = useState<GalleryImage[]>(fallbackImages);
+
+  useEffect(() => {
+    setVisibleImages(getActiveImages());
+
+    const interval = setInterval(() => {
+      setVisibleImages(getActiveImages());
+    }, ROTATE_INTERVAL_MS);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section id="gallery" className="py-20 px-4">
@@ -40,52 +110,31 @@ export const Gallery: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="relative">
-          {/* Blurred Gallery Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 filter blur-sm pointer-events-none">
-            {galleryImages.map((image, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative aspect-square rounded-lg overflow-hidden"
-              >
-                <div className="w-full h-full bg-surface rounded-lg overflow-hidden">
-                  <div
-                    className="w-full h-full bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url(${image.src})`,
-                    }}
-                  />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {visibleImages.map((image, index) => (
+            <motion.div
+              key={`${image.src}-${index}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.08 }}
+              className="relative aspect-square rounded-lg overflow-hidden group"
+            >
+              <div className="w-full h-full bg-surface rounded-lg overflow-hidden">
+                <div
+                  className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                  style={{
+                    backgroundImage: `url(${image.src})`,
+                  }}
+                />
+              </div>
+              {image.caption && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                  <p className="text-white text-sm font-medium">{image.caption}</p>
                 </div>
-                {image.caption && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <p className="text-white text-sm font-medium">{image.caption}</p>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Coming Soon Overlay */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="absolute inset-0 flex items-center justify-center"
-          >
-            <div className="glass p-12 rounded-2xl text-center backdrop-blur-md border border-white/20">
-              <h3 className="font-display text-6xl md:text-8xl font-bold gradient-text mb-4">
-                {t.ui.comingSoon}
-              </h3>
-              <p className="text-xl text-text/80 max-w-md mx-auto">
-                {t.ui.galleryPhotosBeingPrepared}
-              </p>
-            </div>
-          </motion.div>
+              )}
+            </motion.div>
+          ))}
         </div>
 
       </div>

@@ -94,7 +94,7 @@ export const translations: Record<'en' | 'es', Translations> = {
     },
     social: {
       youtube: 'https://www.youtube.com/@LifeOnFullVolume',
-      instagram: 'https://instagram.com/lumen_dj',
+      instagram: 'https://www.instagram.com/lifeonfullvolume_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
       tiktok: 'https://tiktok.com/@lumen_dj'
     },
     videos: {
@@ -123,7 +123,7 @@ export const translations: Record<'en' | 'es', Translations> = {
     },
     contact: {
       email: 'lifeonfullvolume@gmail.com',
-      whatsapp: '+16507144540'
+      whatsapp: '+34665232662'
     },
     content: {
       hero: {
@@ -144,6 +144,8 @@ export const translations: Record<'en' | 'es', Translations> = {
       experience: [
         'House Parties & Private Events: Versatile sets tailored to diverse audiences and settings',
         'Rooftop Party | Sports Tournament (USA): High-energy performance spanning day-to-night',
+        'Madrid Nightlife: Immersive crowd first club sets in Madrid\'s nightlife scene at clubs like Icon, Shoko, and more',
+        'Mexico Beach Clubs: High-energy performances at beach clubs along the Mexican coast, including sunset sessions',
         'Sunset Sessions: Open-air live mixes recorded in Spain and shared on YouTube; Afro-Tech and Organic House with natural ambience',
         'YouTube Presence: Growing channel featuring multi-hour mixes and Sunset Sessions'
       ],
@@ -209,7 +211,7 @@ export const translations: Record<'en' | 'es', Translations> = {
     },
     social: {
       youtube: 'https://www.youtube.com/@LifeOnFullVolume',
-      instagram: 'https://instagram.com/lumen_dj',
+      instagram: 'https://www.instagram.com/lifeonfullvolume_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
       tiktok: 'https://tiktok.com/@lumen_dj'
     },
     videos: {
@@ -238,7 +240,7 @@ export const translations: Record<'en' | 'es', Translations> = {
     },
     contact: {
       email: 'lifeonfullvolume@gmail.com',
-      whatsapp: '+16507144540'
+      whatsapp: '+34665232662'
     },
     content: {
       hero: {
@@ -259,6 +261,8 @@ export const translations: Record<'en' | 'es', Translations> = {
       experience: [
         'Fiestas Privadas y Eventos Privados: Sets versátiles adaptados a audiencias y entornos diversos',
         'Fiesta en Azotea | Torneo Deportivo (USA): Presentación de alta energía que abarca día y noche',
+        'Clubes Nocturnos en Madrid: Sets inmersivos en la escena nocturna de Madrid',
+        'Beach Clubs en México: Presentaciones de alta energía en beach clubs a lo largo de la costa mexicana',
         'Sesiones Sunset: Mezclas en vivo al aire libre grabadas en España y compartidas en YouTube; Afro-Tech y House Orgánico con ambiente natural',
         'Presencia en YouTube: Canal en crecimiento con mezclas de varias horas y Sesiones Sunset'
       ],

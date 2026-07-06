@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Clock } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { scrollToEmail } from '../utils/scroll';
 
 interface Gig {
   date: string;
@@ -29,6 +31,8 @@ const upcomingGigs: Gig[] = [
 ];
 
 export const Gigs: React.FC = () => {
+  const { t } = useLanguage();
+
   // Hide section if no upcoming gigs
   if (upcomingGigs.length === 0) {
     return null;
@@ -145,8 +149,11 @@ export const Gigs: React.FC = () => {
             <p className="text-text/80 mb-6">
               Don't see your event listed? Get in touch to discuss booking LÜMEN for your venue or event.
             </p>
-            <button className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105">
-              Contact for Booking
+            <button
+              onClick={scrollToEmail}
+              className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
+            >
+              {t.ui.contactForBooking}
             </button>
           </div>
         </motion.div>
