@@ -79,7 +79,7 @@ export const Tech: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-text">Audio Equipment</h4>
-                    <p className="text-text/80 text-sm">I am adaptable to any setup, just make sure it's good.</p>
+                    <p className="text-text/80 text-sm">I am adaptable to any setup, CDJs, are preferable. No turntables.</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">

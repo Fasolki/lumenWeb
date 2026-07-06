@@ -100,13 +100,13 @@ export const translations: Record<'en' | 'es', Translations> = {
     videos: {
       featured: [
         'gCTGzejY9Rg',
-        'YLLrNYGTOL0',
-        'g12m8rw-CWs',
-        'DPMY-jVmAk8'
+        '9C6-wqf_LnM',
+        '0FP1gqEGJU8',
+        '2qAApFX4vjM'
       ],
       sunset: [
         'BlQOyqiI_zs',
-        'gCTGzejY9Rg'
+        'MMYqqozr0Y4'
       ]
     },
     gallery: {
@@ -174,7 +174,7 @@ export const translations: Record<'en' | 'es', Translations> = {
       contactBooking: 'Contact & Booking',
       readyToBringExperience: 'Ready to bring the LÜMEN experience to your event? Get in touch to discuss bookings, collaborations, or just to say hello.',
       followTheJourney: 'Follow the Journey',
-      instagramTiktokComingSoon: 'Instagram & TikTok coming soon',
+      instagramTiktokComingSoon: 'TikTok coming soon',
       bookingInformation: 'Booking Information',
       whatToExpect: 'What to Expect',
       responseTime: 'Response Time',
@@ -217,13 +217,13 @@ export const translations: Record<'en' | 'es', Translations> = {
     videos: {
       featured: [
         'gCTGzejY9Rg',
-        'YLLrNYGTOL0',
-        'g12m8rw-CWs',
-        'DPMY-jVmAk8'
+        '9C6-wqf_LnM',
+        '0FP1gqEGJU8',
+        '2qAApFX4vjM'
       ],
       sunset: [
         'BlQOyqiI_zs',
-        'gCTGzejY9Rg'
+        'MMYqqozr0Y4'
       ]
     },
     gallery: {

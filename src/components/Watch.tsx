@@ -63,9 +63,9 @@ export const Watch: React.FC = () => {
   
   const videoTitles = [
     'Sunset Session Vol. 4 — Live on Segovia\'s Ancient City Walls',
-    'Sunset Sessions Vol. 3 — LÜMEN',
-    'Afro & Deep House | LÜMEN Sunset Sessions Vol.2',
-    'LÜMEN - Halloween 🎃 Night Mix'
+    'B2B | Sunset Sessions Vol.9 — LÜMEN & DJ Tepid',
+    'Afro & Jungle House | LÜMEN Cave Rave Vol.1',
+    'LÜMEN - South of Spain Sunset Session'
   ];
 
   return (
