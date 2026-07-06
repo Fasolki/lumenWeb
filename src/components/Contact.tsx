@@ -122,7 +122,7 @@ export const Contact: React.FC = () => {
               onClick={() => handleSocialClick(t.social.tiktok, false)}
               className="glass p-4 rounded-full opacity-50 cursor-not-allowed"
               aria-disabled="true"
-              aria-label="TikTok coming soon"
+              aria-label="Spotify coming soon"
               title="Coming soon"
               disabled
             >

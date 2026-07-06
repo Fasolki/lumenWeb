@@ -10,7 +10,7 @@ interface CarouselImage {
 
 const carouselImages: CarouselImage[] = [
   { src: '/images/hero/performance-1.jpg', alt: 'DJ LÜMEN performing at festival' },
-  { src: '/images/hero/crowd-1.jpg', alt: 'Crowd dancing to LÜMEN\'s set' },
+  { src: '/images/hero/crowd-1.png', alt: 'Crowd dancing to LÜMEN\'s set' },
   { src: '/images/hero/performance-2.jpg', alt: 'LÜMEN behind the decks' },
   { src: '/images/hero/crowd-2.jpg', alt: 'Energized crowd at LÜMEN show' },
   { src: '/images/hero/performance-3.jpg', alt: 'LÜMEN mixing live' },

@@ -146,7 +146,7 @@ export const translations: Record<'en' | 'es', Translations> = {
         'Rooftop Party | Sports Tournament (USA): High-energy performance spanning day-to-night',
         'Madrid Nightlife: Immersive crowd first club sets in Madrid\'s nightlife scene at clubs like Icon, Shoko, and more',
         'Mexico Beach Clubs: High-energy performances at beach clubs along the Mexican coast, including sunset sessions',
-        'Sunset Sessions: Open-air live mixes recorded in Spain and shared on YouTube; Afro-Tech and Organic House with natural ambience',
+        'Sunset Sessions: Open-air live mixes recorded in around the world and shared on YouTube; Afro-Tech and Organic House with natural ambience',
         'YouTube Presence: Growing channel featuring multi-hour mixes and Sunset Sessions'
       ],
       tech: {
@@ -174,7 +174,7 @@ export const translations: Record<'en' | 'es', Translations> = {
       contactBooking: 'Contact & Booking',
       readyToBringExperience: 'Ready to bring the LÜMEN experience to your event? Get in touch to discuss bookings, collaborations, or just to say hello.',
       followTheJourney: 'Follow the Journey',
-      instagramTiktokComingSoon: 'TikTok coming soon',
+      instagramTiktokComingSoon: 'Spotify coming soon',
       bookingInformation: 'Booking Information',
       whatToExpect: 'What to Expect',
       responseTime: 'Response Time',
@@ -200,7 +200,7 @@ export const translations: Record<'en' | 'es', Translations> = {
         tagline: 'DJ LÜMEN',
         description: 'Bringing the energy that moves your soul. Professional DJ services for events worldwide.',
         rightsReserved: '© 2024 DJ LÜMEN. All rights reserved.',
-        builtWith: 'Built with React, Tailwind CSS, and Framer Motion'
+        builtWith: ''
       }
     }
   },

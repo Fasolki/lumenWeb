@@ -54,9 +54,6 @@ function App() {
               
               <div className="text-text/60 text-sm">
                 <p>&copy; 2024 DJ LÜMEN. All rights reserved.</p>
-                <p className="mt-2">
-                  Built with React, Tailwind CSS, and Framer Motion
-                </p>
               </div>
             </div>
           </footer>
