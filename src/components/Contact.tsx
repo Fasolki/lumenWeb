@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Mail, MessageCircle, Youtube, Instagram, Music } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { BookingForm } from './BookingForm';
 
 export const Contact: React.FC = () => {
   const { t } = useLanguage();
@@ -31,7 +32,12 @@ export const Contact: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Main Action Buttons */}
+        {/* Booking form — the primary way to get in touch */}
+        <div id="booking-form" className="mb-16 scroll-mt-24">
+          <BookingForm />
+        </div>
+
+        {/* Direct channels, for anyone who'd rather not use the form */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           <motion.div
             id="contact-email"

@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { scrollToEmail } from '../utils/scroll';
+import { scrollToBooking, scrollToSection } from '../utils/scroll';
+import { heroImages, srcSet, fallbackSrc } from '../data/images';
 
-interface CarouselImage {
-  src: string;
-  alt: string;
-}
-
-const carouselImages: CarouselImage[] = [
-  { src: '/images/hero/performance-1.jpg', alt: 'DJ LÜMEN performing at festival' },
-  { src: '/images/hero/crowd-1.png', alt: 'Crowd dancing to LÜMEN\'s set' },
-  { src: '/images/hero/performance-2.jpg', alt: 'LÜMEN behind the decks' },
-  { src: '/images/hero/crowd-2.jpg', alt: 'Energized crowd at LÜMEN show' },
-  { src: '/images/hero/performance-3.jpg', alt: 'LÜMEN mixing live' },
-];
+const carouselImages = heroImages;
 
 export const Hero: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  // Slide 0 loads with the page; the rest are fetched only once reached, plus
+  // the next one so it's warm before it fades in.
+  const [mountedSlides, setMountedSlides] = useState<Set<number>>(new Set([0]));
   const { t } = useLanguage();
+
+  useEffect(() => {
+    const next = (currentImage + 1) % carouselImages.length;
+    setMountedSlides((prev) => {
+      if (prev.has(currentImage) && prev.has(next)) return prev;
+      return new Set(prev).add(currentImage).add(next);
+    });
+  }, [currentImage]);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -64,31 +65,32 @@ export const Hero: React.FC = () => {
     }
   };
 
-  const scrollToSection = (anchor: string) => {
-    const element = document.querySelector(anchor);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <section id="hero" className="relative h-screen overflow-hidden">
       {/* Background Carousel */}
       <div className="absolute inset-0">
         {carouselImages.map((image, index) => (
           <div
-            key={index}
+            key={image.name}
             className={`absolute inset-0 transition-opacity duration-1000 ${
               index === currentImage ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <div
-              className="w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url(${image.src})`,
-                filter: 'blur(2px)',
-              }}
-            />
+            {/* A hidden slide is still inside the viewport, so `loading="lazy"`
+                would not defer it. Only mount the slides we've reached. */}
+            {mountedSlides.has(index) && (
+              <img
+                src={fallbackSrc('hero', image)}
+                srcSet={srcSet('hero', image)}
+                sizes="100vw"
+                width={image.width}
+                height={image.height}
+                alt={t.content.hero.imageAlts[index] ?? ''}
+                fetchPriority={index === 0 ? 'high' : 'low'}
+                decoding={index === 0 ? 'sync' : 'async'}
+                className="w-full h-full object-cover blur-[2px]"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/60" />
           </div>
         ))}
@@ -155,32 +157,31 @@ export const Hero: React.FC = () => {
             {t.content.hero.subtitle}
           </p>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {/* Booking is the one thing this page is for, so it gets the only
+              primary button; the rest are secondary links under it. */}
+          <div className="flex flex-col items-center gap-6">
             <button
-              onClick={scrollToEmail}
-              className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
+              onClick={scrollToBooking}
+              className="px-10 py-5 text-lg bg-accent text-white font-semibold rounded-lg shadow-lg shadow-accent/25 hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
             >
               {t.ui.bookContact}
             </button>
-            <button
-              onClick={() => scrollToSection('#gallery')}
-              className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105"
-            >
-              {t.ui.gallery}
-            </button>
-            <button
-              onClick={() => scrollToSection('#watch')}
-              className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105"
-            >
-              {t.ui.watch}
-            </button>
-            <button
-              onClick={() => scrollToSection('#about')}
-              className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105"
-            >
-              {t.ui.aboutMe}
-            </button>
+
+            <div className="flex flex-wrap gap-3 justify-center items-center">
+              {([
+                ['#watch', t.ui.watch],
+                ['#gallery', t.ui.gallery],
+                ['#about', t.ui.aboutMe],
+              ] as const).map(([anchor, label]) => (
+                <button
+                  key={anchor}
+                  onClick={() => scrollToSection(anchor)}
+                  className="px-5 py-2.5 glass text-text font-medium rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

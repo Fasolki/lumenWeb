@@ -20,6 +20,8 @@ export interface Translations {
     hero: {
       tagline: string;
       subtitle: string;
+      /** Alt text per carousel slide, in the order the slides appear. */
+      imageAlts: string[];
     };
     about: string[];
     watch: {
@@ -113,8 +115,35 @@ export interface Translations {
 
     // Gallery
     momentsCapturedFromPerformances: string;
+    galleryImageAlt: string;
 
     haveSpecificTechnicalRequirements: string;
+
+    // Booking form
+    form: {
+      title: string;
+      subtitle: string;
+      name: string;
+      email: string;
+      eventDate: string;
+      eventType: string;
+      eventTypePlaceholder: string;
+      eventTypes: string[];
+      location: string;
+      locationPlaceholder: string;
+      budget: string;
+      budgetPlaceholder: string;
+      message: string;
+      messagePlaceholder: string;
+      submit: string;
+      submitting: string;
+      responseNote: string;
+      successTitle: string;
+      successBody: string;
+      errorBody: string;
+      errorEmailFallback: string;
+      mailSubject: string;
+    };
 
     // Accessibility labels
     a11y: {
@@ -167,7 +196,14 @@ export const translations: Record<'en' | 'es', Translations> = {
     content: {
       hero: {
         tagline: 'LÜMEN',
-        subtitle: 'Organic Afro-Tech | Jungle Rhythms | Deep House'
+        subtitle: 'Organic Afro-Tech | Jungle Rhythms | Deep House',
+        imageAlts: [
+          'DJ LÜMEN performing at a festival',
+          'Crowd dancing to a LÜMEN set',
+          'LÜMEN behind the decks',
+          'Energized crowd at a LÜMEN show',
+          'LÜMEN mixing live'
+        ]
       },
       about: [
         'LÜMEN delivers sleek, energetic sets that bridge Afro-Tech, Jungle House, Deep House, and more. Having started over three years ago in his bedroom he is shaped by artists like CARRILLO. B, Hugel, Fred Again, Badbwoy, etc.',
@@ -296,8 +332,42 @@ export const translations: Record<'en' | 'es', Translations> = {
       backupEquipmentContingency: 'Always have backup equipment and contingency plans',
 
       momentsCapturedFromPerformances: 'Moments captured from performances around the world. Each image tells a story of energy, connection, and pure musical magic.',
+      galleryImageAlt: 'DJ LÜMEN performing live',
 
       haveSpecificTechnicalRequirements: 'Have specific technical requirements or questions about the setup? Get in touch to discuss your venue\'s needs and requirements.',
+
+      form: {
+        title: 'Book LÜMEN',
+        subtitle: 'Tell me about your event and I\'ll get back to you with availability and a quote.',
+        name: 'Your name',
+        email: 'Email',
+        eventDate: 'Event date',
+        eventType: 'Type of event',
+        eventTypePlaceholder: 'Select one',
+        eventTypes: [
+          'Club night',
+          'Private party',
+          'Wedding',
+          'Festival',
+          'Beach club / rooftop',
+          'Sunset Session',
+          'Other'
+        ],
+        location: 'Venue / city',
+        locationPlaceholder: 'e.g. Icon, Madrid',
+        budget: 'Budget',
+        budgetPlaceholder: 'e.g. €500 (optional)',
+        message: 'Message',
+        messagePlaceholder: 'Set length, expected crowd, what you\'re after...',
+        submit: 'Send booking request',
+        submitting: 'Sending...',
+        responseNote: 'I reply to booking requests within 24 hours.',
+        successTitle: 'Request sent',
+        successBody: 'Thanks — I\'ve got your details and will get back to you within 24 hours.',
+        errorBody: 'Something went wrong sending your request.',
+        errorEmailFallback: 'Send it as an email instead',
+        mailSubject: 'Booking request'
+      },
 
       a11y: {
         previousImage: 'Previous image',
@@ -347,7 +417,14 @@ export const translations: Record<'en' | 'es', Translations> = {
     content: {
       hero: {
         tagline: 'LÜMEN',
-        subtitle: 'Afro-Tech Orgánico | Ritmos Jungle | Deep House'
+        subtitle: 'Afro-Tech Orgánico | Ritmos Jungle | Deep House',
+        imageAlts: [
+          'DJ LÜMEN actuando en un festival',
+          'El público bailando con un set de LÜMEN',
+          'LÜMEN tras los platos',
+          'Público entregado en un show de LÜMEN',
+          'LÜMEN mezclando en directo'
+        ]
       },
       about: [
         'LÜMEN ofrece sets elegantes y enérgicos que combinan Afro-Tech, Jungle House, Deep House y mucho más. Empezó hace más de tres años en su habitación, influenciado por artistas como CARRILLO. B, Hugel, Fred Again o Badbwoy.',
@@ -476,8 +553,42 @@ export const translations: Record<'en' | 'es', Translations> = {
       backupEquipmentContingency: 'Siempre con equipo de repuesto y plan de contingencia',
 
       momentsCapturedFromPerformances: 'Momentos capturados en actuaciones por todo el mundo. Cada imagen cuenta una historia de energía, conexión y pura magia musical.',
+      galleryImageAlt: 'DJ LÜMEN actuando en directo',
 
       haveSpecificTechnicalRequirements: '¿Tienes requisitos técnicos concretos o dudas sobre el montaje? Escríbeme para hablar de las necesidades de tu sala.',
+
+      form: {
+        title: 'Reserva a LÜMEN',
+        subtitle: 'Cuéntame cómo es tu evento y te respondo con disponibilidad y presupuesto.',
+        name: 'Tu nombre',
+        email: 'Email',
+        eventDate: 'Fecha del evento',
+        eventType: 'Tipo de evento',
+        eventTypePlaceholder: 'Elige una opción',
+        eventTypes: [
+          'Noche de club',
+          'Fiesta privada',
+          'Boda',
+          'Festival',
+          'Beach club / azotea',
+          'Sunset Session',
+          'Otro'
+        ],
+        location: 'Sala / ciudad',
+        locationPlaceholder: 'p. ej. Icon, Madrid',
+        budget: 'Presupuesto',
+        budgetPlaceholder: 'p. ej. 500 € (opcional)',
+        message: 'Mensaje',
+        messagePlaceholder: 'Duración del set, público esperado, qué buscas...',
+        submit: 'Enviar solicitud de reserva',
+        submitting: 'Enviando...',
+        responseNote: 'Respondo a las solicitudes de reserva en menos de 24 horas.',
+        successTitle: 'Solicitud enviada',
+        successBody: 'Gracias, ya tengo tus datos. Te respondo en menos de 24 horas.',
+        errorBody: 'Ha ocurrido un error al enviar tu solicitud.',
+        errorEmailFallback: 'Enviarla por email',
+        mailSubject: 'Solicitud de reserva'
+      },
 
       a11y: {
         previousImage: 'Imagen anterior',

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { scrollToEmail } from '../utils/scroll';
+import { scrollToBooking } from '../utils/scroll';
 
 interface Gig {
   date: string;
@@ -132,7 +132,7 @@ export const Gigs: React.FC = () => {
               {t.ui.gigsBookingDescription}
             </p>
             <button
-              onClick={scrollToEmail}
+              onClick={scrollToBooking}
               className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
             >
               {t.ui.contactForBooking}

@@ -1,8 +1,8 @@
+/* Fonts are loaded from index.html so they can start downloading during HTML
+   parse rather than waiting on this stylesheet. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* Club theme (default) */
@@ -21,7 +21,16 @@
   --glow: hsl(30, 80%, 60%);
 }
 
-* {
+/* Only the elements painted from theme variables need to cross-fade when the
+   theme flips. Transitioning every element on the page forces a style recalc
+   on all of them and makes hovers feel sluggish. */
+body,
+.glass,
+.gradient-text,
+[class*='bg-surface'],
+[class*='bg-accent'],
+[class*='text-accent'],
+[class*='border-white'] {
   transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 
@@ -75,11 +84,15 @@ html {
   }
 }
 
-/* Focus styles */
-.focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-  focus-ring-color: var(--accent);
-  focus-ring-offset-color: var(--bg);
+/* Focus styles. `focus-ring-color` / `focus-ring-offset-color` are not real CSS
+   properties — they were silently dropped, leaving no visible focus ring. */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.focus-ring:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* Glass effect */

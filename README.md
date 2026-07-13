@@ -32,18 +32,27 @@ A modern, responsive one-page bilingual website for DJ LÜMEN built with React, 
 npm install
 ```
 
-2. **Start development server:**
+2. **Configure the booking form (optional but recommended):**
+```bash
+cp .env.example .env.local
+```
+Then follow the instructions in that file to paste in a Formspree endpoint.
+Without it the booking form still works — it falls back to opening the
+visitor's mail client with the fields filled in — but submissions won't land
+in your inbox automatically.
+
+3. **Start development server:**
 ```bash
 npm run dev
 ```
 The site will be available at `http://localhost:3000`
 
-3. **Build for production:**
+4. **Build for production:**
 ```bash
 npm run build
 ```
 
-4. **Preview production build:**
+5. **Preview production build:**
 ```bash
 npm run preview
 ```
@@ -52,19 +61,47 @@ npm run preview
 
 ```
 lumenWeb/
+├── assets/
+│   └── originals/         # Full-size source photos (never served directly)
+│       ├── hero/
+│       └── gallery/
 ├── public/
-│   ├── images/
-│   │   ├── hero/          # Hero carousel images
-│   │   └── gallery/       # Gallery images
-│   └── downloads/         # Technical rider PDF
+│   ├── images/            # GENERATED web-sized WebP — do not edit, do not commit
+│   ├── downloads/         # Technical rider PDF
+│   ├── favicon.svg
+│   ├── robots.txt
+│   └── sitemap.xml
+├── scripts/
+│   └── optimize-images.mjs  # Resizes assets/originals/ into public/images/
 ├── src/
 │   ├── components/        # React components
 │   ├── contexts/          # React contexts (LanguageContext)
+│   ├── data/images.ts     # GENERATED image manifest (widths + sizes)
 │   ├── translations.ts    # All site content and translations
 │   ├── App.tsx            # Main app component
 │   └── main.tsx           # Entry point
 └── dist/                  # Production build (generated)
 ```
+
+## Images
+
+Photos straight off a camera or phone are far too heavy to serve — the site
+was once shipping 86 MB. Drop the **full-size originals** into
+`assets/originals/hero/` or `assets/originals/gallery/` and the build resizes
+them into web-sized WebP automatically:
+
+```bash
+npm run images   # also runs automatically before `npm run dev` and `npm run build`
+```
+
+This writes `public/images/` (git-ignored, regenerated on every build) and
+`src/data/images.ts`, which tells the app what widths exist so it can serve a
+`srcset`. Nothing else needs updating — new files in `assets/originals/gallery/`
+appear in the gallery on the next build.
+
+The `og:image` (the preview card shown when the site is shared on WhatsApp,
+Instagram or Facebook) is also generated, from the photo named in `OG_SOURCE`
+in the script.
 
 ## Content Management
 
@@ -79,18 +116,15 @@ All content is managed in `src/translations.ts`:
 
 ### Adding Gallery Images
 
-1. Add image files to `/public/images/gallery/`
-2. Update the `galleryImages` array in `src/components/Gallery.tsx`:
-```typescript
-const galleryImages: GalleryImage[] = [
-  { src: '/images/gallery/your-image.jpg', alt: 'Description', caption: 'Caption' },
-];
-```
+Drop the original into `assets/originals/gallery/`. That's it — the next
+`npm run dev` or `npm run build` resizes it and adds it to the gallery pool.
 
 ### Adding Hero Carousel Images
 
-1. Add image files to `/public/images/hero/`
-2. Update the `carouselImages` array in `src/components/Hero.tsx`
+Drop the original into `assets/originals/hero/`, then add its filename (without
+the extension) to `HERO_ORDER` in `scripts/optimize-images.mjs` to place it in
+the carousel, and add an alt-text entry to `content.hero.imageAlts` in
+`src/translations.ts` for **both** languages.
 
 ## Deployment
 
@@ -99,7 +133,9 @@ const galleryImages: GalleryImage[] = [
 1. Push code to GitHub
 2. Import repository in [Vercel](https://vercel.com)
 3. Vercel will auto-detect Vite settings
-4. Deploy automatically on every push
+4. Add `VITE_FORMSPREE_ENDPOINT` under Settings → Environment Variables, so
+   the booking form posts to your inbox
+5. Deploy automatically on every push
 
 ### Manual Build
 

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
-import { scrollToEmail } from '../utils/scroll';
+import { scrollToBooking } from '../utils/scroll';
 import { YouTubeEmbed } from './YouTubeEmbed';
 
 export const SunsetSessions: React.FC = () => {
@@ -62,7 +62,7 @@ export const SunsetSessions: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={scrollToEmail}
+                onClick={scrollToBooking}
                 className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
               >
                 {t.ui.bookSunsetSession}
