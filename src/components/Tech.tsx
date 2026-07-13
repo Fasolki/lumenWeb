@@ -1,20 +1,23 @@
 import { motion } from 'framer-motion';
 import { Download, FileText, Wifi, Volume2, Zap } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { scrollToSection } from '../utils/scroll';
 
 export const Tech: React.FC = () => {
   const { t } = useLanguage();
-  
-  const handleDownloadRider = () => {
-    // TODO: Replace with actual rider PDF URL
-    const link = document.createElement('a');
-    link.href = t.content.tech.riderUrl;
-    link.download = 'lumen-tech-rider.pdf';
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+
+  const equipment = [
+    { icon: Volume2, ...t.ui.equipment.audio },
+    { icon: Zap, ...t.ui.equipment.lighting },
+    { icon: Wifi, ...t.ui.equipment.connectivity },
+    { icon: FileText, ...t.ui.equipment.documentation },
+  ];
+
+  const setupRequirements = [
+    { badge: '2h', title: t.ui.setupTime, description: t.ui.minimumHours },
+    { badge: '24h', title: t.ui.advanceNotice, description: t.ui.technicalRequirementsConfirmed },
+    { badge: '✓', title: t.ui.backupPlan, description: t.ui.backupEquipmentContingency },
+  ];
 
   return (
     <section id="tech" className="py-20 px-4">
@@ -50,13 +53,16 @@ export const Tech: React.FC = () => {
               <p className="text-text/90 leading-relaxed mb-6">
                 {t.content.tech.description}
               </p>
-              <button
-                onClick={handleDownloadRider}
+              <a
+                href={t.content.tech.riderUrl}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center px-6 py-3 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
               >
                 <Download size={20} className="mr-2" />
                 {t.ui.downloadTechnicalRider}
-              </button>
+              </a>
             </div>
           </motion.div>
 
@@ -73,42 +79,17 @@ export const Tech: React.FC = () => {
                 {t.ui.equipmentOverview}
               </h3>
               <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div className="glass p-3 rounded-lg">
-                    <Volume2 size={20} className="text-accent" />
+                {equipment.map(({ icon: Icon, title, description }) => (
+                  <div key={title} className="flex items-center space-x-4">
+                    <div className="glass p-3 rounded-lg">
+                      <Icon size={20} className="text-accent" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-text">{title}</h4>
+                      <p className="text-text/80 text-sm">{description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-text">Audio Equipment</h4>
-                    <p className="text-text/80 text-sm">I am adaptable to any setup, CDJs, are preferable. No turntables.</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="glass p-3 rounded-lg">
-                    <Zap size={20} className="text-accent" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-text">Lighting Rig</h4>
-                    <p className="text-text/80 text-sm">Custom LED setup</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="glass p-3 rounded-lg">
-                    <Wifi size={20} className="text-accent" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-text">Connectivity</h4>
-                    <p className="text-text/80 text-sm">WiFi, Ethernet, USB-C connections</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="glass p-3 rounded-lg">
-                    <FileText size={20} className="text-accent" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-text">Documentation</h4>
-                    <p className="text-text/80 text-sm">Complete technical specifications</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -124,36 +105,18 @@ export const Tech: React.FC = () => {
         >
           <div className="glass p-8 rounded-2xl">
             <h3 className="font-display text-2xl font-bold text-accent mb-6 text-center">
-              Setup Requirements
+              {t.ui.setupRequirements}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="glass p-4 rounded-lg w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-accent">2h</span>
+              {setupRequirements.map(({ badge, title, description }) => (
+                <div key={title} className="text-center">
+                  <div className="glass p-4 rounded-lg w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-accent">{badge}</span>
+                  </div>
+                  <h4 className="font-semibold text-text mb-2">{title}</h4>
+                  <p className="text-text/80 text-sm">{description}</p>
                 </div>
-                <h4 className="font-semibold text-text mb-2">Setup Time</h4>
-                <p className="text-text/80 text-sm">
-                  Minimum 2 hours for sound check and equipment setup
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="glass p-4 rounded-lg w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-accent">24h</span>
-                </div>
-                <h4 className="font-semibold text-text mb-2">Advance Notice</h4>
-                <p className="text-text/80 text-sm">
-                  Technical requirements must be confirmed 24 hours prior
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="glass p-4 rounded-lg w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-accent">✓</span>
-                </div>
-                <h4 className="font-semibold text-text mb-2">Backup Plan</h4>
-                <p className="text-text/80 text-sm">
-                  Always have backup equipment and contingency plans
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </motion.div>
@@ -173,13 +136,8 @@ export const Tech: React.FC = () => {
             <p className="text-text/80 mb-6">
               {t.ui.haveSpecificTechnicalRequirements}
             </p>
-            <button 
-              onClick={() => {
-                const element = document.querySelector('#contact');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+            <button
+              onClick={() => scrollToSection('#contact')}
               className="px-8 py-4 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring transform hover:scale-105"
             >
               {t.ui.contactForTechnicalDetails}

@@ -99,7 +99,7 @@ export const Hero: React.FC = () => {
         <button
           onClick={prevImage}
           className="glass p-3 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring"
-          aria-label="Previous image"
+          aria-label={t.ui.a11y.previousImage}
         >
           <ChevronLeft size={24} className="text-text" />
         </button>
@@ -109,7 +109,7 @@ export const Hero: React.FC = () => {
         <button
           onClick={nextImage}
           className="glass p-3 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring"
-          aria-label="Next image"
+          aria-label={t.ui.a11y.nextImage}
         >
           <ChevronRight size={24} className="text-text" />
         </button>
@@ -120,14 +120,14 @@ export const Hero: React.FC = () => {
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className="glass p-3 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring"
-          aria-label={isPlaying ? 'Pause carousel' : 'Play carousel'}
+          aria-label={isPlaying ? t.ui.a11y.pauseCarousel : t.ui.a11y.playCarousel}
         >
           {isPlaying ? <Pause size={20} className="text-text" /> : <Play size={20} className="text-text" />}
         </button>
       </div>
 
-      {/* Carousel Indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 flex space-x-2">
+      {/* Carousel Indicators (sit above the scroll indicator at the bottom of the hero) */}
+      <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-10 flex space-x-2">
         {carouselImages.map((_, index) => (
           <button
             key={index}
@@ -135,7 +135,7 @@ export const Hero: React.FC = () => {
             className={`w-3 h-3 rounded-full transition-all duration-200 focus-ring ${
               index === currentImage ? 'bg-accent' : 'bg-white/50 hover:bg-white/75'
             }`}
-            aria-label={`Go to image ${index + 1}`}
+            aria-label={`${t.ui.a11y.goToImage} ${index + 1}`}
           />
         ))}
       </div>

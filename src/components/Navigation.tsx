@@ -1,38 +1,56 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { scrollToSection } from '../utils/scroll';
 
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [renderedSections, setRenderedSections] = useState<string[]>([]);
   const { language, setLanguage, t } = useLanguage();
+
+  // Sections can render nothing (Gigs hides itself when there are no dates),
+  // so only link to the ones actually on the page.
+  useEffect(() => {
+    setRenderedSections(
+      Array.from(document.querySelectorAll('section[id]')).map((section) => section.id)
+    );
+  }, []);
+
+  const links = useMemo(
+    () =>
+      t.nav.labels
+        .map((label: string, index: number) => ({
+          label,
+          anchor: t.nav.anchors[index],
+          sectionId: t.nav.anchors[index].substring(1),
+        }))
+        .filter(({ sectionId }) => renderedSections.includes(sectionId)),
+    [t.nav.labels, t.nav.anchors, renderedSections]
+  );
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = t.nav.anchors.map((anchor: string) => anchor.substring(1));
       const scrollPosition = window.scrollY + 100;
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
+      for (const { sectionId } of links) {
+        const element = document.getElementById(sectionId);
         if (element) {
           const { offsetTop, offsetHeight } = element;
           if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
+            setActiveSection(sectionId);
             break;
           }
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [t.nav.anchors]);
+  }, [links]);
 
-  const scrollToSection = (anchor: string) => {
-    const element = document.querySelector(anchor);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleNavClick = (anchor: string) => {
+    scrollToSection(anchor);
     setIsOpen(false);
   };
 
@@ -44,7 +62,7 @@ export const Navigation: React.FC = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <button
-                onClick={() => scrollToSection('#hero')}
+                onClick={() => handleNavClick('#hero')}
                 className="font-display text-2xl font-bold gradient-text focus-ring rounded-lg px-2 py-1"
               >
                 LÜMEN
@@ -54,26 +72,20 @@ export const Navigation: React.FC = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                {t.nav.labels.map((label: string, index: number) => {
-                  const anchor = t.nav.anchors[index];
-                  const sectionId = anchor.substring(1);
-                  const isActive = activeSection === sectionId;
-                  
-                  return (
-                    <button
-                      key={label}
-                      onClick={() => scrollToSection(anchor)}
-                      className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 focus-ring ${
-                        isActive
-                          ? 'text-accent bg-accent/10'
-                          : 'text-text hover:text-accent hover:bg-accent/5'
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  );
-                })}
-                
+                {links.map(({ label, anchor, sectionId }) => (
+                  <button
+                    key={anchor}
+                    onClick={() => handleNavClick(anchor)}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 focus-ring ${
+                      activeSection === sectionId
+                        ? 'text-accent bg-accent/10'
+                        : 'text-text hover:text-accent hover:bg-accent/5'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+
                 {/* Language Toggle */}
                 <button
                   onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
@@ -91,7 +103,8 @@ export const Navigation: React.FC = () => {
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-text hover:text-accent focus-ring rounded-md p-2"
-                aria-label="Toggle menu"
+                aria-label={t.ui.a11y.toggleMenu}
+                aria-expanded={isOpen}
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -103,26 +116,20 @@ export const Navigation: React.FC = () => {
         {isOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-surface/95 backdrop-blur-md">
-              {t.nav.labels.map((label: string, index: number) => {
-                const anchor = t.nav.anchors[index];
-                const sectionId = anchor.substring(1);
-                const isActive = activeSection === sectionId;
-                
-                return (
-                  <button
-                    key={label}
-                    onClick={() => scrollToSection(anchor)}
-                    className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-all duration-200 focus-ring ${
-                      isActive
-                        ? 'text-accent bg-accent/10'
-                        : 'text-text hover:text-accent hover:bg-accent/5'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-              
+              {links.map(({ label, anchor, sectionId }) => (
+                <button
+                  key={anchor}
+                  onClick={() => handleNavClick(anchor)}
+                  className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-all duration-200 focus-ring ${
+                    activeSection === sectionId
+                      ? 'text-accent bg-accent/10'
+                      : 'text-text hover:text-accent hover:bg-accent/5'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+
               {/* Mobile Language Toggle */}
               <button
                 onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}

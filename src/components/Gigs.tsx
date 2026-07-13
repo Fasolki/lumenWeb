@@ -12,41 +12,23 @@ interface Gig {
 }
 
 // TODO: Replace with actual upcoming gigs data
-const upcomingGigs: Gig[] = [
-  // Example gigs - replace with real data
-  // {
-  //   date: '2024-03-15',
-  //   venue: 'Electric Ballroom',
-  //   location: 'London, UK',
-  //   time: '22:00',
-  //   status: 'upcoming'
-  // },
-  // {
-  //   date: '2024-03-22',
-  //   venue: 'Berghain',
-  //   location: 'Berlin, Germany',
-  //   time: '23:00',
-  //   status: 'sold-out'
-  // }
-];
+const upcomingGigs: Gig[] = [];
 
 export const Gigs: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   // Hide section if no upcoming gigs
   if (upcomingGigs.length === 0) {
     return null;
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
-  };
 
   const getStatusColor = (status: Gig['status']) => {
     switch (status) {
@@ -64,11 +46,11 @@ export const Gigs: React.FC = () => {
   const getStatusText = (status: Gig['status']) => {
     switch (status) {
       case 'upcoming':
-        return 'Tickets Available';
+        return t.ui.ticketsAvailable;
       case 'sold-out':
-        return 'Sold Out';
+        return t.ui.soldOut;
       case 'cancelled':
-        return 'Cancelled';
+        return t.ui.cancelled;
       default:
         return '';
     }
@@ -85,10 +67,10 @@ export const Gigs: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            Upcoming Gigs
+            {t.ui.upcomingGigs}
           </h2>
           <p className="text-xl text-text/80 max-w-3xl mx-auto">
-            Catch LÜMEN live at these upcoming events. Don't miss out on the experience.
+            {t.ui.catchLumenLive}
           </p>
         </motion.div>
 
@@ -126,7 +108,7 @@ export const Gigs: React.FC = () => {
                   </span>
                   {gig.status === 'upcoming' && (
                     <button className="ml-4 px-6 py-2 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-all duration-200 focus-ring">
-                      Get Tickets
+                      {t.ui.getTickets}
                     </button>
                   )}
                 </div>
@@ -144,10 +126,10 @@ export const Gigs: React.FC = () => {
         >
           <div className="glass p-8 rounded-2xl">
             <h3 className="font-display text-2xl font-bold text-accent mb-4">
-              Want to Book LÜMEN?
+              {t.ui.wantToBookLumen}
             </h3>
             <p className="text-text/80 mb-6">
-              Don't see your event listed? Get in touch to discuss booking LÜMEN for your venue or event.
+              {t.ui.gigsBookingDescription}
             </p>
             <button
               onClick={scrollToEmail}
