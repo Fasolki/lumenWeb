@@ -1,5 +1,5 @@
 import { ThemeController } from './components/ThemeController';
-import { LanguageProvider } from './contexts/LanguageContext';
+import { LanguageProvider, type Language } from './contexts/LanguageContext';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
 import { QuickContact } from './components/QuickContact';
@@ -13,9 +13,9 @@ import { Contact } from './components/Contact';
 import { Tech } from './components/Tech';
 import { Footer } from './components/Footer';
 
-function App() {
+function App({ language }: { language: Language }) {
   return (
-    <LanguageProvider>
+    <LanguageProvider language={language}>
       <ThemeController>
         <div className="min-h-screen">
           <Navigation />
