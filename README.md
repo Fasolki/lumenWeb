@@ -4,7 +4,8 @@ A modern, responsive one-page bilingual website for DJ LÜMEN built with React, 
 
 ## Features
 
-- **🌍 Bilingual Support**: Full English/Spanish translation system with language toggle
+- **🌍 Bilingual**: English at `/`, Spanish at `/es/` — separate URLs, cross-linked with `hreflang`, so both are indexable
+- **🔎 Prerendered**: every page is rendered to static HTML at build time, so crawlers and link-preview scrapers see the full content without running JavaScript
 - **🎨 Theme Controller**: Dynamic section-based theming with smooth transitions
   - "Club" palette (deep blues/purples/black) for most sections
   - "Sunset" palette (warm oranges/browns/golds) for Sunset Sessions and Watch sections
@@ -102,6 +103,59 @@ appear in the gallery on the next build.
 The `og:image` (the preview card shown when the site is shared on WhatsApp,
 Instagram or Facebook) is also generated, from the photo named in `OG_SOURCE`
 in the script.
+
+## SEO
+
+The site is a client-rendered React app, which for SEO means the HTML served to
+a crawler was an *empty* `<div id="root">` — zero indexable words. And because
+the language used to be client-side state on a single URL, Google could only
+ever see the English version.
+
+Both are fixed at build time by `scripts/prerender.mjs`, which renders the app
+to static HTML once per language:
+
+| URL | Language | Canonical |
+|-----|----------|-----------|
+| `/` | English | `https://lifeonfullvolume.com/` |
+| `/es/` | Spanish | `https://lifeonfullvolume.com/es/` |
+
+The two are cross-linked with `hreflang` (plus `x-default` → English), each gets
+its own `<title>`, meta description and Open Graph tags from `seo` in
+`src/translations.ts`, and `dist/sitemap.xml` is generated listing both.
+
+A first-time visitor with a Spanish browser is redirected from `/` to `/es/` in
+the client. Crawlers don't run that, so both URLs stay independently indexable.
+
+**The domain is set in one place**: `SITE_URL` in `scripts/prerender.mjs`.
+
+### After deploying — do these once
+
+1. **[Google Search Console](https://search.google.com/search-console)** → add
+   `lifeonfullvolume.com`, verify via DNS, and submit `/sitemap.xml`. Google will
+   not find a brand-new site quickly on its own. Do the same at
+   [Bing Webmaster Tools](https://www.bing.com/webmasters), which also feeds
+   DuckDuckGo.
+2. **Link back from your profiles.** Put `lifeonfullvolume.com` in your YouTube
+   channel's links, your Instagram bio, and any SoundCloud/Mixcloud/Resident
+   Advisor profile. Inbound links are most of what determines whether you rank —
+   they matter more than anything in this repo.
+3. **Check `/es/` actually loads** on the deployed site. If your Vercel project
+   has an SPA catch-all rewrite configured, it will swallow `/es/` and serve the
+   English page; the default Vite static setup serves it correctly.
+
+## Analytics
+
+Uses [Plausible](https://plausible.io) — cookieless, so under GDPR/ePrivacy it
+needs **no cookie-consent banner**, which also means it counts every visitor
+rather than only those who accept a banner.
+
+Set `VITE_PLAUSIBLE_DOMAIN` (see `.env.example`). If it's unset, no analytics
+script is loaded at all.
+
+Beyond pageviews, the site sends a **`Booking request`** custom event when the
+booking form is submitted, tagged with `method` (form or email), `language` and
+`eventType`. Mark it as a goal in Plausible: enquiries are the only metric that
+actually matters here, and it tells you which traffic converts.
 
 ## Content Management
 

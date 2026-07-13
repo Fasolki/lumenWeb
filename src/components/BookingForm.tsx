@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackEvent } from '../utils/analytics';
 
 /**
  * Set VITE_FORMSPREE_ENDPOINT (see .env.example) to receive submissions in
@@ -68,6 +69,7 @@ export const BookingForm: React.FC = () => {
     if (honeypot) return; // bot filled the hidden field
 
     if (!ENDPOINT) {
+      trackEvent('Booking request', { method: 'email', language });
       openMailClient();
       return;
     }
@@ -80,6 +82,12 @@ export const BookingForm: React.FC = () => {
         body: JSON.stringify({ ...form, _language: language }),
       });
       if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      // The conversion that actually matters: a booking enquiry, not a pageview.
+      trackEvent('Booking request', {
+        method: 'form',
+        language,
+        eventType: form.eventType || 'unspecified',
+      });
       setStatus('success');
       setForm(EMPTY);
     } catch {

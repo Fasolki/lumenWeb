@@ -1,4 +1,10 @@
 export interface Translations {
+  /** Used for <title>, meta description and the Open Graph tags, per language. */
+  seo: {
+    title: string;
+    description: string;
+    ogLocale: string;
+  };
   nav: {
     labels: string[];
     anchors: string[];
@@ -168,6 +174,12 @@ export interface Translations {
 
 export const translations: Record<'en' | 'es', Translations> = {
   en: {
+    seo: {
+      title: 'DJ LÜMEN — Afro House, Afro-Tech & Deep House DJ | Bookings',
+      description:
+        'DJ LÜMEN plays organic Afro-Tech, jungle rhythms and deep house at clubs, beach clubs and private events in Madrid and across Spain. Watch the Sunset Sessions and request a booking.',
+      ogLocale: 'en_US'
+    },
     nav: {
       labels: ['About', 'Watch', 'Sunset Sessions', 'Experience', 'Gigs', 'Gallery', 'Contact', 'Tech'],
       anchors: ['#about', '#watch', '#sunset', '#experience', '#gigs', '#gallery', '#contact', '#tech']
@@ -389,6 +401,12 @@ export const translations: Record<'en' | 'es', Translations> = {
     }
   },
   es: {
+    seo: {
+      title: 'DJ LÜMEN — DJ de Afro House, Afro-Tech y Deep House | Contrataciones',
+      description:
+        'DJ LÜMEN pincha Afro-Tech orgánico, ritmos jungle y deep house en clubes, beach clubs, bodas y eventos privados en Madrid y toda España. Mira las Sunset Sessions y pide presupuesto.',
+      ogLocale: 'es_ES'
+    },
     nav: {
       labels: ['Sobre mí', 'Vídeos', 'Sunset Sessions', 'Experiencia', 'Fechas', 'Galería', 'Contacto', 'Técnico'],
       anchors: ['#about', '#watch', '#sunset', '#experience', '#gigs', '#gallery', '#contact', '#tech']
