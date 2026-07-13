@@ -79,3 +79,6 @@ jspm_packages/
 
 # TernJS port file
 .tern-port
+
+# Generated from assets/originals/ by scripts/optimize-images.mjs
+/public/images/

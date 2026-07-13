@@ -23,11 +23,16 @@ export const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId, title, inde
     >
       {!isPlaying ? (
         <div className="relative w-full h-full bg-surface rounded-lg overflow-hidden">
-          <div
-            className="w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: `url(https://img.youtube.com/vi/${videoId}/maxresdefault.jpg)`,
-            }}
+          {/* A CSS background-image can't be lazy-loaded, so all six thumbnails
+              were fetched on page load. An <img> defers them until scrolled to. */}
+          <img
+            src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+            alt=""
+            width={1280}
+            height={720}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
             <button

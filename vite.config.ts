@@ -9,6 +9,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    // Was `true`, which published a ~1 MB map of the site's source publicly.
+    sourcemap: false,
   },
 })
