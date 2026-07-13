@@ -1,28 +1,39 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { translations, Translations } from '../translations';
 
+type Language = 'en' | 'es';
+
 interface LanguageContextType {
-  language: 'en' | 'es';
-  setLanguage: (lang: 'en' | 'es') => void;
+  language: Language;
+  setLanguage: (lang: Language) => void;
   t: Translations;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<'en' | 'es'>('en');
+const isLanguage = (value: string | null): value is Language =>
+  value === 'en' || value === 'es';
 
-  // Load language preference from localStorage on mount
+// Saved preference wins; otherwise follow the browser so Spanish-speaking
+// visitors land on the Spanish site without touching the toggle.
+const getInitialLanguage = (): Language => {
+  const saved = localStorage.getItem('lumen-language');
+  if (isLanguage(saved)) {
+    return saved;
+  }
+  return navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en';
+};
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('en');
+
   useEffect(() => {
-    const savedLanguage = localStorage.getItem('lumen-language') as 'en' | 'es';
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'es')) {
-      setLanguage(savedLanguage);
-    }
+    setLanguage(getInitialLanguage());
   }, []);
 
-  // Save language preference to localStorage when it changes
   useEffect(() => {
     localStorage.setItem('lumen-language', language);
+    document.documentElement.lang = language;
   }, [language]);
 
   const t = translations[language];

@@ -4,3 +4,7 @@ export const scrollToEmail = () => {
 
   element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
+
+export const scrollToSection = (anchor: string) => {
+  document.querySelector(anchor)?.scrollIntoView({ behavior: 'smooth' });
+};

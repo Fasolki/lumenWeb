@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
-import { scrollToEmail } from '../utils/scroll';
+import { scrollToEmail, scrollToSection } from '../utils/scroll';
 
 export const Experience: React.FC = () => {
   const { t } = useLanguage();
-  
+
   return (
     <section id="experience" className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
@@ -16,10 +16,10 @@ export const Experience: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            Experience & Highlights
+            {t.ui.experienceHighlights}
           </h2>
           <p className="text-xl text-text/80 max-w-3xl mx-auto">
-            3 years of experience creating unforgettable moments on dance floors around the world.
+            {t.ui.experienceSubtitle}
           </p>
         </motion.div>
 
@@ -53,8 +53,7 @@ export const Experience: React.FC = () => {
               {t.ui.readyToCreateMagic}
             </h3>
             <p className="text-text/80 mb-8 text-lg">
-              Whether it's an intimate club night, a house party, or a special sunset, 
-              LÜMEN brings the same passion and energy to every performance. Let's create something unforgettable together.
+              {t.ui.experienceCta}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
@@ -63,7 +62,10 @@ export const Experience: React.FC = () => {
               >
                 {t.ui.bookNow}
               </button>
-              <button className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105">
+              <button
+                onClick={() => scrollToSection('#tech')}
+                className="px-8 py-4 glass text-text font-semibold rounded-lg hover:bg-accent/20 transition-all duration-200 focus-ring transform hover:scale-105"
+              >
                 {t.ui.viewTechRequirements}
               </button>
             </div>

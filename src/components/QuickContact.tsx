@@ -10,9 +10,11 @@ export const QuickContact: React.FC = () => {
         <div className="glass rounded-2xl p-5 md:p-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left">
-              <p className="text-sm uppercase tracking-wider text-accent font-semibold">Quick Contact</p>
+              <p className="text-sm uppercase tracking-wider text-accent font-semibold">
+                {t.ui.quickContact}
+              </p>
               <p className="text-text/85 mt-1">
-                Booking inquiries and collaborations - reach out anytime.
+                {t.ui.quickContactDescription}
               </p>
             </div>
 
@@ -20,7 +22,7 @@ export const QuickContact: React.FC = () => {
               <a
                 href={`mailto:${t.contact.email}`}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent text-white hover:bg-accent/90 transition-all duration-200"
-                aria-label="Send an email"
+                aria-label={t.ui.a11y.sendEmail}
               >
                 <Mail size={16} />
                 <span>Email</span>
@@ -31,7 +33,7 @@ export const QuickContact: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg glass hover:bg-accent/20 transition-all duration-200"
-                aria-label="Visit Instagram profile"
+                aria-label={t.ui.a11y.visitInstagram}
               >
                 <Instagram size={16} />
                 <span>Instagram</span>

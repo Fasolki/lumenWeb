@@ -4,19 +4,13 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 export const Contact: React.FC = () => {
   const { t } = useLanguage();
-  
+
   const handleEmailClick = () => {
     window.location.href = `mailto:${t.contact.email}`;
   };
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/${t.contact.whatsapp.replace(/\D/g, '')}`, '_blank');
-  };
-
-  const handleSocialClick = (url: string, isActive: boolean) => {
-    if (isActive) {
-      window.open(url, '_blank');
-    }
   };
 
   return (
@@ -55,7 +49,7 @@ export const Contact: React.FC = () => {
                 <h3 className="font-display text-2xl font-bold text-text">Email</h3>
               </div>
               <p className="text-text/80 mb-4">
-                For bookings, collaborations, and general inquiries
+                {t.ui.emailDescription}
               </p>
               <p className="text-accent font-semibold text-lg">
                 {t.contact.email}
@@ -78,10 +72,10 @@ export const Contact: React.FC = () => {
                 <h3 className="font-display text-2xl font-bold text-text">WhatsApp</h3>
               </div>
               <p className="text-text/80 mb-4">
-                Quick messages and urgent bookings via WhatsApp
+                {t.ui.whatsappDescription}
               </p>
               <p className="text-accent font-semibold text-lg">
-                +34 665232662
+                {t.contact.whatsapp}
               </p>
             </button>
           </motion.div>
@@ -99,38 +93,38 @@ export const Contact: React.FC = () => {
             {t.ui.followTheJourney}
           </h3>
           <div className="flex justify-center space-x-6">
-            {/* YouTube - Active */}
-            <button
-              onClick={() => handleSocialClick(t.social.youtube, true)}
+            <a
+              href={t.social.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
               className="glass p-4 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring group"
-              aria-label="Visit YouTube channel"
+              aria-label={t.ui.a11y.visitYouTube}
             >
               <Youtube size={24} className="text-accent group-hover:scale-110 transition-transform duration-200" />
-            </button>
+            </a>
 
-            {/* Instagram - Active */}
-            <button
-              onClick={() => handleSocialClick(t.social.instagram, true)}
+            <a
+              href={t.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
               className="glass p-4 rounded-full hover:bg-accent/20 transition-all duration-200 focus-ring group"
-              aria-label="Visit Instagram profile"
+              aria-label={t.ui.a11y.visitInstagram}
             >
               <Instagram size={24} className="text-accent group-hover:scale-110 transition-transform duration-200" />
-            </button>
+            </a>
 
-            {/* TikTok - Disabled */}
+            {/* Spotify - not live yet */}
             <button
-              onClick={() => handleSocialClick(t.social.tiktok, false)}
               className="glass p-4 rounded-full opacity-50 cursor-not-allowed"
-              aria-disabled="true"
-              aria-label="Spotify coming soon"
-              title="Coming soon"
+              aria-label={t.ui.spotifyComingSoon}
+              title={t.ui.spotifyComingSoon}
               disabled
             >
               <Music size={24} className="text-text/50" />
             </button>
           </div>
           <p className="text-text/60 text-sm mt-4">
-            {t.ui.instagramTiktokComingSoon}
+            {t.ui.spotifyComingSoon}
           </p>
         </motion.div>
 
@@ -143,24 +137,23 @@ export const Contact: React.FC = () => {
           className="glass p-8 rounded-2xl text-center"
         >
           <h3 className="font-display text-2xl font-bold text-accent mb-6">
-            Booking Information
+            {t.ui.bookingInformation}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
             <div>
-              <h4 className="font-semibold text-text mb-3">What to Expect</h4>
+              <h4 className="font-semibold text-text mb-3">{t.ui.whatToExpect}</h4>
               <ul className="space-y-2 text-text/80">
-                <li>• Professional DJ setup</li>
-                <li>• Genre flexibility</li>
-                <li>• Pre-event consultation</li>
+                {t.ui.whatToExpectItems.map((item: string) => (
+                  <li key={item}>• {item}</li>
+                ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-text mb-3">Response Time</h4>
+              <h4 className="font-semibold text-text mb-3">{t.ui.responseTime}</h4>
               <ul className="space-y-2 text-text/80">
-                <li>• Email: Within 24 hours</li>
-                <li>• WhatsApp: Within a few hours</li>
-                <li>• Urgent bookings: Same day</li>
-                <li>• Weekend inquiries: Monday</li>
+                {t.ui.responseTimeItems.map((item: string) => (
+                  <li key={item}>• {item}</li>
+                ))}
               </ul>
             </div>
           </div>

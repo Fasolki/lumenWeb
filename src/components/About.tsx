@@ -15,7 +15,7 @@ export const About: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="font-display text-5xl md:text-6xl font-bold gradient-text mb-6">
-            About LÜMEN
+            {t.ui.aboutLumen}
           </h2>
         </motion.div>
 
@@ -45,11 +45,10 @@ export const About: React.FC = () => {
         >
           <div className="glass p-8 rounded-2xl max-w-2xl mx-auto">
             <h3 className="font-display text-2xl font-bold text-accent mb-4">
-              The LÜMEN Experience
+              {t.ui.lumenExperienceTitle}
             </h3>
             <p className="text-text/80">
-              Every set is a movie, carefully crafted to create moments to take you from this life into the music. 
-              From house parties to night clubs, LÜMEN brings the same passion and energy to every performance.
+              {t.ui.lumenExperienceDescription}
             </p>
           </div>
         </motion.div>
