@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TEQUILA — Juego de Retos y Preguntas</title>
+<style>
+  :root{
+    --bg:#0d1110;
+    --bg2:#141a18;
+    --line:#26302c;
+    --agave:#8fd694;
+    --lime:#c7f04a;
+    --gold:#f2c14e;
+    --salt:#f4f1e8;
+    --dim:#8b968f;
+    --hot:#ff5b6e;
+    --devil:#ff2e63;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 700px at 50% -15%, #1d2a24 0%, transparent 60%),
+      var(--bg);
+    color:var(--salt);
+    font-family:'Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif;
+    display:flex;flex-direction:column;align-items:center;
+    min-height:100dvh;padding:20px 16px 28px;
+  }
+  .wrap{width:100%;max-width:520px;flex:1;display:flex;flex-direction:column}
+  .screen{display:none;flex:1;flex-direction:column}
+  .screen.on{display:flex}
+
+  /* ---------- Titles ---------- */
+  .logo{text-align:center;margin:14px 0 4px}
+  .logo h1{
+    margin:0;font-size:clamp(46px,15vw,74px);letter-spacing:.16em;
+    font-weight:800;line-height:1;
+    background:linear-gradient(180deg,var(--gold),var(--lime));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .logo p{margin:10px 0 0;color:var(--dim);font-size:13px;letter-spacing:.22em;text-transform:uppercase}
+
+  /* ---------- Setup ---------- */
+  .block{margin-top:26px}
+  .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+  .row{display:flex;gap:8px}
+  input[type=text]{
+    flex:1;background:var(--bg2);border:1px solid var(--line);color:var(--salt);
+    padding:14px 16px;border-radius:14px;font-size:16px;font-family:inherit;outline:none;
+  }
+  input[type=text]:focus{border-color:var(--agave)}
+  select{
+    flex:1;min-width:0;background:var(--bg2);border:1px solid var(--line);color:var(--salt);
+    padding:14px 12px;border-radius:14px;font-size:15px;font-family:inherit;outline:none;
+    appearance:none;-webkit-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
+    background-position:calc(100% - 17px) 22px,calc(100% - 12px) 22px;
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+  }
+  select:focus{border-color:var(--agave)}
+  .hint{text-transform:none;letter-spacing:0;color:#5c665f}
+  .chip.pair{border-color:#e0568a;background:#241a20}
+  .chip.pair b{font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;min-height:10px}
+  .chip{
+    background:var(--bg2);border:1px solid var(--line);border-radius:999px;
+    padding:9px 12px 9px 15px;font-size:15px;display:flex;align-items:center;gap:9px;
+  }
+  .chip b{font-weight:600}
+  .chip span{color:var(--dim);cursor:pointer;font-size:18px;line-height:1}
+  .chip span:hover{color:var(--hot)}
+
+  .modes{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+  .mode{
+    background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px 16px;
+    cursor:pointer;transition:.15s;
+  }
+  .mode.sel{border-color:var(--lime);background:#1a2418}
+  .mode[data-lv="2,3"].sel{border-color:var(--devil);background:#241318}
+  .mode[data-lv="2,3"] b{color:var(--devil)}
+  .mode b{display:block;font-size:16px;margin-bottom:3px}
+  .mode small{color:var(--dim);font-size:12.5px;line-height:1.45;display:block}
+
+  /* ---------- Buttons ---------- */
+  button{font-family:inherit;cursor:pointer;border:none;transition:.13s}
+  button:active{transform:scale(.975)}
+  .btn{
+    width:100%;padding:17px;border-radius:16px;font-size:17px;font-weight:700;
+    letter-spacing:.05em;background:linear-gradient(180deg,var(--lime),#8fbe20);color:#0d1110;
+  }
+  .btn:disabled{opacity:.32;cursor:not-allowed}
+  .btn-ghost{
+    background:transparent;border:1px solid var(--line);color:var(--dim);
+    padding:13px;border-radius:14px;font-size:14px;width:100%;
+  }
+  .add{
+    background:var(--bg2);border:1px solid var(--line);color:var(--agave);
+    border-radius:14px;padding:0 20px;font-size:24px;font-weight:600;
+  }
+
+  /* ---------- Game ---------- */
+  .topbar{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase}
+  .topbar button{background:none;color:var(--dim);font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:6px}
+
+  .turn{text-align:center;margin:22px 0 14px}
+  .turn small{display:block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+  .turn h2{margin:0;font-size:clamp(28px,8vw,40px);font-weight:800;color:var(--gold);letter-spacing:.02em}
+
+  .card{
+    flex:1;min-height:280px;background:linear-gradient(165deg,#1a2320,#121816);
+    border:1px solid var(--line);border-radius:26px;
+    padding:28px 24px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(420px 260px at 50% 0%,rgba(199,240,74,.09),transparent 70%);
+    pointer-events:none;
+  }
+  .card.q::before{background:radial-gradient(420px 260px at 50% 0%,rgba(242,193,78,.10),transparent 70%)}
+  .card.g::before{background:radial-gradient(420px 260px at 50% 0%,rgba(255,91,110,.10),transparent 70%)}
+  .card.lv3{border-color:#4a1f2c}
+  .card.lv3::before{background:radial-gradient(460px 300px at 50% 0%,rgba(255,46,99,.16),transparent 72%)}
+  .kind{
+    font-size:11px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;
+    padding:7px 15px;border-radius:999px;border:1px solid var(--line);margin-bottom:22px;color:var(--lime);
+  }
+  .card.q .kind{color:var(--gold)}
+  .card.g .kind{color:var(--hot)}
+  .text{font-size:clamp(20px,5.6vw,26px);line-height:1.42;font-weight:600;margin:0;max-width:24ch}
+  .heat{margin-top:20px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+  .pen{
+    margin-top:13px;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--hot);background:rgba(255,91,110,.09);border:1px solid rgba(255,91,110,.28);
+    padding:8px 16px;border-radius:999px;
+  }
+  .card.lv3 .pen{color:var(--devil);background:rgba(255,46,99,.12);border-color:rgba(255,46,99,.35)}
+
+  .actions{display:flex;gap:10px;margin-top:16px}
+  .actions button{flex:1;padding:17px 10px;border-radius:16px;font-size:16px;font-weight:700}
+  .done{background:linear-gradient(180deg,var(--agave),#4f9a5e);color:#0d1110}
+  .drink{background:linear-gradient(180deg,#ff7a89,#d63b52);color:#fff}
+  .skip{margin-top:10px}
+
+  /* ---------- Scores ---------- */
+  .list{margin-top:20px;display:flex;flex-direction:column;gap:9px}
+  .item{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--bg2);border:1px solid var(--line);border-radius:15px;padding:14px 17px;
+  }
+  .item b{font-size:17px;font-weight:600}
+  .item i{font-style:normal;color:var(--gold);font-size:15px;letter-spacing:.06em}
+  .item.lead{border-color:var(--gold)}
+
+  .foot{margin-top:auto;padding-top:22px;text-align:center;color:#5c665f;font-size:11.5px;line-height:1.6}
+  .stack{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ SETUP ============ -->
+  <section id="s-setup" class="screen on">
+    <div class="logo">
+      <h1>TEQUILA</h1>
+      <p>Cumple el reto · o toma</p>
+    </div>
+
+    <div class="block">
+      <div class="label">Jugadores</div>
+      <div class="row">
+        <input type="text" id="name" placeholder="Nombre" autocomplete="off" maxlength="14">
+        <button class="add" id="addBtn">+</button>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="block" id="coupleBlock" style="display:none">
+      <div class="label">Parejas <span class="hint">— lo picante entre ellos, solo entre ellos</span></div>
+      <div class="row">
+        <select id="mateA"></select>
+        <select id="mateB"></select>
+        <button class="add" id="pairBtn">💕</button>
+      </div>
+      <div class="chips" id="couples"></div>
+    </div>
+
+    <div class="block">
+      <div class="label">Nivel de la baraja</div>
+      <div class="modes" id="modes">
+        <div class="mode" data-lv="1"><b>🎉 Fiesta</b><small>Divertido, vergonzoso y coqueto. Nada explícito.</small></div>
+        <div class="mode sel" data-lv="1,2"><b>🌶️ Mixto</b><small>Empieza suave y se va calentando. Fiesta + sin filtro.</small></div>
+        <div class="mode" data-lv="2"><b>🔥 Sin filtro</b><small>Solo lo pesado. Explícito, sexual, sin frenos. +18.</small></div>
+        <div class="mode" data-lv="2,3"><b>😈 Sin límites</b><small>Otro nivel: contacto, ropa que se va y preguntas que no se olvidan. Solo si el grupo se tiene confianza.</small></div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <button class="btn" id="startBtn" disabled>EMPEZAR</button>
+    </div>
+
+    <div class="foot">
+      Solo para mayores de edad. Ningún reto es obligatorio: siempre puedes tomar…<br>o pasar. Toma agua y no manejes.
+    </div>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="s-game" class="screen">
+    <div class="topbar">
+      <button id="quitBtn">← Salir</button>
+      <span id="counter"></span>
+      <button id="scoreBtn">Tragos</button>
+    </div>
+
+    <div class="turn">
+      <small>Le toca a</small>
+      <h2 id="player">—</h2>
+    </div>
+
+    <div class="card" id="card">
+      <div class="kind" id="kind">RETO</div>
+      <p class="text" id="text"></p>
+      <div class="heat" id="heat"></div>
+      <div class="pen" id="pen"></div>
+    </div>
+
+    <div class="actions">
+      <button class="done" id="doneBtn">LO HICE 😎</button>
+      <button class="drink" id="drinkBtn">TOMO 🥃</button>
+    </div>
+    <button class="btn-ghost skip" id="skipBtn">Otra carta</button>
+  </section>
+
+  <!-- ============ SCORES ============ -->
+  <section id="s-score" class="screen">
+    <div class="logo" style="margin-top:26px">
+      <h1 style="font-size:clamp(30px,10vw,46px)">TRAGOS</h1>
+      <p>Quién va perdiendo</p>
+    </div>
+    <div class="list" id="list"></div>
+    <div class="stack">
+      <button class="btn" id="backBtn">SEGUIR JUGANDO</button>
+      <button class="btn-ghost" id="resetBtn">Reiniciar juego</button>
+    </div>
+    <div class="foot">Salud. 🍋</div>
+  </section>
+
+</div>
+
+<script>
+/* ================== BARAJA ==================
+   n: 1 = fiesta, 2 = sin filtro, 3 = sin límites
+   d: tragos si no cumples (si no se pone, va el default del nivel)
+   grp: la carta involucra a todo el grupo (no le sale a quien tenga pareja)
+   {P} = otro jugador al azar (o tu pareja, si la tienes)
+============================================ */
+const CASTIGO = {1:1, 2:2, 3:3};   // tragos default por nivel
+const RETOS = [
+  // ---- nivel 1 ----
+  {n:1,x:"Imita a {P} hasta que alguien adivine a quién estás imitando."},
+  {n:1,x:"Habla con acento español de España hasta tu próximo turno."},
+  {n:1,x:"Enséñale al grupo la última foto de tu galería. Sin buscar, la última."},
+  {n:1,d:2,x:"Deja que {P} publique lo que quiera en tus historias."},
+  {n:1,x:"Manda una nota de voz cantando a la última persona con la que hablaste."},
+  {n:1,x:"Baila 30 segundos sin música. El grupo cronometra."},
+  {n:1,d:2,x:"Deja que {P} lea en voz alta tus últimos 5 mensajes enviados."},
+  {n:1,x:"Habla sin usar la letra A hasta tu próximo turno."},
+  {n:1,d:2,x:"Enseña tu historial de búsqueda de YouTube."},
+  {n:1,x:"Deja que el grupo te ponga un apodo por el resto del juego."},
+  {n:1,d:2,x:"Sube una selfie sin filtro y sin arreglarte a tus historias."},
+  {n:1,x:"Habla en tercera persona hasta tu próximo turno."},
+  {n:1,x:"Ponle un piropo sincero a cada persona del grupo."},
+  {n:1,x:"Cuenta un chiste. Si nadie se ríe, tomas."},
+  {n:1,x:"Canta el coro de la canción que más pena te da que te guste."},
+  {n:1,x:"Intercambia una prenda con {P} por dos rondas."},
+  {n:1,d:2,x:"Deja tu teléfono en el centro de la mesa por dos rondas."},
+  {n:1,x:"Imita cómo bailas cuando ya vas bien pedo."},
+  {n:1,d:2,x:"Escríbele «hola» a tu ex. Sin explicar nada."},
+  {n:1,x:"{P} elige un emoji y tú lo dices en voz alta al final de cada frase hasta tu próximo turno."},
+  {n:1,x:"Ponte de pie y da un discurso de 30 segundos agradeciendo tu premio imaginario."},
+  {n:1,d:2,x:"Enseña la última foto que le mandaste a alguien."},
+  {n:1,x:"Cierra los ojos. Alguien te da la mano y tienes que adivinar quién es."},
+  {n:1,x:"Habla cantando, estilo ópera, hasta tu próximo turno."},
+  {n:1,x:"Deja que {P} te despeine como quiera. Así te quedas."},
+  {n:1,d:2,x:"Haz 15 sentadillas aquí mismo."},
+  {n:1,x:"Imita el sonido del animal que {P} elija, y hazlo convincente."},
+  {n:1,d:2,x:"Llama a alguien de tu familia y dile que lo extrañas. A esta hora."},
+  {n:1,x:"Deja que {P} te escoja la foto de perfil por el resto de la noche."},
+  {n:1,x:"Di el nombre de todos los que están aquí de memoria… con los ojos cerrados y en orden."},
+  {n:1,d:2,x:"Cuenta la historia más vergonzosa de {P} que conozcas."},
+  {n:1,x:"Habla en voz de bebé hasta tu próximo turno."},
+
+  // ---- nivel 2 ----
+  {n:2,d:3,x:"Dale un beso a {P} donde el grupo decida."},
+  {n:2,x:"Siéntate en las piernas de {P} hasta tu próximo turno."},
+  {n:2,d:3,x:"Quítate una prenda. Tú eliges cuál."},
+  {n:2,x:"Susúrrale al oído a {P} lo que le harías si no hubiera nadie más."},
+  {n:2,x:"Hazle un baile sensual de 20 segundos a {P}."},
+  {n:2,x:"Deja que {P} te dé una nalgada."},
+  {n:2,d:3,x:"Manda un mensaje coqueto al último contacto con el que hablaste."},
+  {n:2,x:"Describe tu mejor experiencia sexual en tres palabras. Si el grupo pide más, das detalles."},
+  {n:2,x:"Bésale el cuello a {P} durante 5 segundos."},
+  {n:2,x:"Demuestra cómo besas. En tu mano si te da pena… o en {P} si te atreves."},
+  {n:2,d:3,x:"Enseña tu conversación más subida de tono. Puedes tapar el nombre."},
+  {n:2,x:"Haz un gemido convincente. Si el grupo se ríe, no contó: otra vez."},
+  {n:2,d:3,x:"Deja que {P} te quite una prenda."},
+  {n:2,x:"Recrea la cara que haces cuando acabas."},
+  {n:2,x:"Dale un masaje de 30 segundos a la persona de tu derecha."},
+  {n:2,d:3,x:"Dale a {P} el mejor beso que puedas. El grupo califica del 1 al 10."},
+  {n:2,d:3,x:"Enseña el último mensaje de tu app de citas."},
+  {n:2,x:"Baila pegadito con {P} una canción completa."},
+  {n:2,d:4,x:"Quítate lo que traigas debajo. Sin quitarte lo de encima."},
+  {n:2,d:3,x:"Haz un striptease de 15 segundos. Puedes quedarte vestido, lo que cuenta es la actuación."},
+  {n:2,grp:1,x:"Dile a cada persona del grupo qué parte de su cuerpo te gusta más."},
+  {n:2,d:3,x:"Manda una nota de voz gimiendo a tu último chat."},
+  {n:2,d:3,x:"Deja que {P} escriba lo que quiera desde tu teléfono a quien él o ella elija."},
+  {n:2,x:"Ponle nombre a tus partes íntimas y úsalo en voz alta el resto del juego."},
+  {n:2,x:"Descríbele a {P} con detalle cómo sería su primera cita… y cómo terminaría."},
+  {n:2,x:"Chúpale el dedo a {P}. Cinco segundos."},
+  {n:2,grp:1,x:"Imita a alguien del grupo teniendo sexo. Que adivinen quién es."},
+  {n:2,d:4,x:"Deja que el grupo revise tu galería de fotos oculta."},
+  {n:2,x:"Dile a {P} al oído tu fantasía. Solo a esa persona."},
+  {n:2,x:"Hazle un mordisco suave en el cuello a {P}."},
+
+  // ---- nivel 3 · sin límites ----
+  {n:3,x:"Dale a {P} un beso de lengua. Diez segundos, contados en voz alta."},
+  {n:3,d:4,x:"Quítate dos prendas. Tú eliges cuáles, pero que se noten."},
+  {n:3,d:5,x:"Enciérrate con {P} tres minutos donde nadie vea. Lo que pase ahí, ahí se queda."},
+  {n:3,x:"Sal, sobre el cuello de {P}. Tequila. Limón de su boca."},
+  {n:3,x:"Hazle un chupetón a {P} donde la ropa lo tape."},
+  {n:3,d:4,x:"Quítale una prenda a {P} usando solo los dientes."},
+  {n:3,x:"Siéntate encima de {P} y muévete quince segundos como si fuera en serio."},
+  {n:3,x:"{P} te toca por encima de la ropa donde quiera durante diez segundos. No te mueves."},
+  {n:3,d:4,x:"Baile privado para {P}. Una canción completa, sin reírte."},
+  {n:3,x:"Muérdele la oreja a {P} y susúrrale exactamente lo que quieres que te haga."},
+  {n:3,d:4,x:"Ponte una venda. {P} te besa en tres lugares y tienes que decir dónde."},
+  {n:3,x:"Deja que {P} escriba con marcador lo que quiera en tu cuerpo. Ahí se queda."},
+  {n:3,x:"Finge un orgasmo de veinte segundos. El grupo vota si fue creíble; si no, tomas igual."},
+  {n:3,x:"Dile a {P} paso por paso lo que le harías. Sin censura y sin saltarte nada."},
+  {n:3,x:"Chúpale el cuello a {P} diez segundos."},
+  {n:3,d:5,x:"Quédate en ropa interior el resto de la ronda."},
+  {n:3,x:"{P} te pone un hielo donde quiera. Aguantas hasta que se derrita."},
+  {n:3,d:4,x:"Mándale un audio a tu ex diciéndole qué extrañas de la cama."},
+  {n:3,x:"Di tus tres puntos débiles. {P} prueba el que quiera."},
+  {n:3,d:4,x:"Besa a los dos que tienes a los lados. Tú decides con cuál te tardas más."},
+  {n:3,x:"Dale de comer algo a {P} usando solo la boca."},
+  {n:3,d:5,x:"Enseña tu carpeta de fotos ocultas. Toda, sin pasarle rápido."},
+  {n:3,d:4,x:"Deja que {P} entre a tus DMs y lea en voz alta el mensaje más comprometedor que encuentre."},
+  {n:3,x:"Recrea con {P} tu posición favorita. Vestidos, pero completa."},
+  {n:3,x:"Deja que {P} te amarre las manos y quédate así dos rondas."},
+  {n:3,d:4,x:"Cuenta con lujo de detalle la última vez que tuviste sexo. Sin resumir."},
+  {n:3,d:5,x:"Manda un nude ahorita mismo al chat que {P} elija de tu teléfono."},
+  {n:3,x:"El grupo elige una parte de tu cuerpo y {P} la besa."},
+  {n:3,x:"Ponte de espaldas a {P} y deja que te abrace por la cintura el resto de la ronda."},
+  {n:3,d:4,x:"Enséñale al grupo tu foto más comprometedora. La que tú quieras, pero que valga la pena."}
+];
+
+const PREGUNTAS = [
+  // ---- nivel 1 ----
+  {n:1,x:"¿Cuál ha sido tu momento más vergonzoso en público?"},
+  {n:1,x:"¿Qué es lo más caro que has roto y no confesaste?"},
+  {n:1,x:"¿Cuál es la mentira más grande que le has dicho a tus papás?"},
+  {n:1,x:"¿A quién de aquí le tienes más envidia y por qué?"},
+  {n:1,x:"¿Cuál es tu placer culposo musical?"},
+  {n:1,x:"¿Qué app escondes cuando alguien te pide el teléfono?"},
+  {n:1,x:"¿Cuál es la peor cita que has tenido?"},
+  {n:1,x:"¿Has stalkeado a alguien de este grupo en redes? ¿A quién?"},
+  {n:1,d:2,x:"¿Cuál es el chisme más fuerte que sabes y no has contado?"},
+  {n:1,x:"¿Quién de aquí te caía mal cuando lo conociste?"},
+  {n:1,d:2,x:"¿Cuánto dinero debes ahorita, de verdad?"},
+  {n:1,d:2,x:"Cuéntanos tu peor borrachera. Completa."},
+  {n:1,x:"¿Qué es lo más raro que has hecho por dinero?"},
+  {n:1,x:"¿Cuál es tu peor hábito que nadie de aquí sabe?"},
+  {n:1,d:2,x:"Si tuvieras que sacar a alguien de este grupo de tu vida, ¿a quién?"},
+  {n:1,x:"¿Cuál es el peor regalo que has recibido y quién te lo dio?"},
+  {n:1,d:2,x:"¿Alguna vez te has robado algo? ¿Qué fue?"},
+  {n:1,x:"¿Cuál es la excusa más falsa que has usado para cancelar un plan?"},
+  {n:1,x:"¿Quién de aquí sería el peor roomie y por qué?"},
+  {n:1,x:"¿Alguna vez te has hecho el dormido para no hablar con alguien?"},
+  {n:1,x:"¿Cuánto llevas sin lavar la ropa que traes puesta?"},
+  {n:1,x:"¿Qué película te ha hecho llorar y no lo admites?"},
+  {n:1,x:"¿Cuál es la cosa más infantil que sigues haciendo?"},
+  {n:1,x:"¿A quién de aquí llamarías si estuvieras en la cárcel?"},
+  {n:1,d:2,x:"¿Cuál es el secreto más grande que le has guardado a alguien de este grupo?"},
+  {n:1,x:"¿Te has hecho pipí de risa? Cuenta cuándo."},
+  {n:1,x:"¿Qué persona famosa crees que sería tu peor pareja?"},
+  {n:1,x:"¿Cuánto tiempo pasaste sin bañarte en tu peor racha?"},
+
+  // ---- nivel 2 ----
+  {n:2,grp:1,x:"¿Con quién de aquí te acostarías?"},
+  {n:2,d:3,x:"¿Cuál es tu fetiche? El de verdad."},
+  {n:2,x:"¿Dónde es el lugar más raro donde lo has hecho?"},
+  {n:2,d:3,x:"¿Con cuántas personas te has acostado?"},
+  {n:2,x:"¿Alguna vez has fingido un orgasmo?"},
+  {n:2,d:3,x:"¿Le has sido infiel a alguien? ¿Te cacharon?"},
+  {n:2,d:3,x:"¿Cuál es la fantasía que nunca le has contado a nadie?"},
+  {n:2,x:"¿Has tenido un trío? Si no, ¿lo harías y con quién?"},
+  {n:2,x:"¿Cuánto duró tu vez más rápida?"},
+  {n:2,d:3,x:"¿Te has grabado teniendo sexo?"},
+  {n:2,x:"Cuenta tu peor experiencia en la cama."},
+  {n:2,x:"¿Te has enamorado de alguien prohibido? ¿Quién era?"},
+  {n:2,d:3,x:"¿Qué tan seguido lo haces solo?"},
+  {n:2,grp:1,x:"¿Con quiénes de este grupo harías un trío?"},
+  {n:2,grp:1,x:"¿Has hecho sexting con alguien que está en esta sala?"},
+  {n:2,x:"¿Alguna vez casi te cachan? ¿Qué pasó?"},
+  {n:2,x:"¿Qué es lo más sucio que te han dicho al oído?"},
+  {n:2,d:3,x:"¿Has mandado nudes? ¿A cuántas personas?"},
+  {n:2,x:"¿Lo has hecho en casa de tus papás con ellos adentro?"},
+  {n:2,grp:1,x:"¿Quién de aquí crees que es mejor en la cama?"},
+  {n:2,x:"¿Cuál es tu posición favorita? Descríbela."},
+  {n:2,x:"¿Alguna vez te ha atraído alguien de tu mismo sexo?"},
+  {n:2,x:"¿Qué es lo más loco que has hecho por alguien que te gustaba?"},
+  {n:2,x:"¿Con cuál de tus ex repetirías hoy mismo?"},
+  {n:2,x:"¿Cuál es la peor razón por la que has terminado con alguien?"},
+  {n:2,d:3,x:"¿Alguna vez te has acostado con alguien de un amigo tuyo?"},
+  {n:2,x:"¿Qué parte de tu cuerpo te gusta más que te toquen?"},
+  {n:2,x:"¿Cuántas veces al día piensas en sexo, de verdad?"},
+  {n:2,x:"¿Te han pedido algo en la cama que te haya sacado de onda?"},
+  {n:2,x:"¿Prefieres tener el control o que te lo quiten?"},
+
+  // ---- nivel 3 · sin límites ----
+  {n:3,d:4,x:"¿Qué es lo más sucio que has hecho y no le has contado a nadie? A nadie."},
+  {n:3,x:"¿Cuántas veces te has masturbado esta semana? El número exacto."},
+  {n:3,d:4,x:"¿Todavía tienes guardado algún video tuyo? ¿Con quién?"},
+  {n:3,x:"¿Qué es lo más humillante que has aceptado hacer en la cama?"},
+  {n:3,x:"¿Te has acostado con alguien sin saber su nombre?"},
+  {n:3,x:"¿Cuál es tu límite absoluto? ¿Qué es lo que jamás harías?"},
+  {n:3,x:"¿Has estado con dos personas distintas el mismo día?"},
+  {n:3,d:4,x:"¿Cuál es la fantasía que te da pena admitir hasta contigo mismo?"},
+  {n:3,grp:1,d:4,x:"¿Con quién de los que están aquí ya te acostaste?"},
+  {n:3,grp:1,d:4,x:"¿Has fantaseado con alguien de esta sala? Di el nombre y te ahorras los tragos."},
+  {n:3,d:5,x:"¿Le has sido infiel a la persona con la que estás ahorita?"},
+  {n:3,x:"¿Cuál es el lugar más público donde lo has hecho de verdad?"},
+  {n:3,x:"¿Qué juguete tienes escondido en tu casa en este momento?"},
+  {n:3,x:"¿Has terminado con alguien por ser malo en la cama? Cuenta."},
+  {n:3,x:"¿Qué tan lejos has llegado en un lugar público sin que te cacharan?"},
+  {n:3,d:4,x:"¿Alguna vez dijiste el nombre equivocado? ¿Qué pasó después?"},
+  {n:3,x:"¿Cuál es tu récord de veces en una noche y con quién?"},
+  {n:3,x:"¿Has estado con alguien de tu mismo sexo? Detalles, no un sí o no."},
+  {n:3,x:"¿Qué te han hecho que jamás en la vida repetirías?"},
+  {n:3,x:"¿Has usado esposas, cuerdas o venda? ¿Quién iba amarrado?"},
+  {n:3,d:4,x:"¿Le mandaste un nude a la persona equivocada alguna vez?"},
+  {n:3,x:"¿Cuál es la categoría exacta que buscas cuando ves porno?"},
+  {n:3,x:"¿Te enamoraste de alguien mientras tenías pareja? ¿Sigue en tu vida?"},
+  {n:3,x:"¿Cuánto es lo máximo que has durado sin sexo?"},
+  {n:3,x:"¿Alguna vez te acostaste con alguien por venganza?"},
+  {n:3,x:"¿Prefieres atar o que te aten? Y explica por qué."},
+  {n:3,d:4,x:"¿Cuál es la cosa más cara que has hecho o comprado por sexo?"},
+  {n:3,x:"¿Has tenido algo con alguien mucho mayor? ¿Cuántos años de diferencia?"},
+  {n:3,d:5,x:"¿Cuál es el secreto sexual que te llevarías a la tumba? Ese. Cuéntalo."},
+  {n:3,x:"¿Alguna vez te cacharon en pleno acto? ¿Quién te vio?"}
+];
+
+const GRUPO = [
+  {n:1,x:"Todos toman. Sin excepciones."},
+  {n:1,x:"El último en tocarse la nariz toma. ¡Ya!"},
+  {n:1,x:"Cascada. Empieza {P} y nadie para hasta que el de al lado pare."},
+  {n:1,x:"Todos los solteros toman."},
+  {n:1,x:"{P} dice un «nunca he…». Todos los que sí, toman."},
+  {n:1,x:"Votación: ¿quién es el más coqueto del grupo? El ganador toma dos."},
+  {n:1,x:"{P} elige una categoría. Todos dicen algo sin repetir. El que falle, toma."},
+  {n:1,x:"El más joven toma. El mayor toma dos."},
+  {n:1,x:"Todos los que traen el teléfono en la mano toman."},
+  {n:1,x:"Votación: ¿quién va a ser el primero en caer esta noche? Ese toma."},
+  {n:2,x:"Todos los que han besado a alguien de este grupo, tomen."},
+  {n:2,x:"Todos los que han mandado nudes, tomen."},
+  {n:2,x:"Todos los que están viendo a alguien ahorita, tomen."},
+  {n:2,x:"Todos los que han sido infieles, tomen. Sin voltear a ver a nadie."},
+  {n:2,x:"El que tenga más ex parejas toma tres."},
+  {n:2,x:"Todos los que lo han hecho en un carro, tomen."},
+  {n:2,x:"Votación: ¿quién es el más caliente del grupo? Toma dos."},
+  {n:2,x:"Todos los que se han acostado con alguien la misma noche que lo conocieron, tomen."},
+
+  // ---- nivel 3 · sin límites ----
+  {n:3,x:"Todos los que hayan tenido un trío toman tres."},
+  {n:3,x:"Todos los que se hayan acostado con alguien de esta sala toman cuatro."},
+  {n:3,x:"Todos los que hayan tenido sexo hoy toman tres. Sin mentir."},
+  {n:3,x:"El que tenga el nude más reciente en su galería toma tres… o lo enseña."},
+  {n:3,x:"Votación: ¿quién es el más pervertido de aquí? Ese toma cuatro."},
+  {n:3,x:"Todos los que hayan usado juguetes toman dos."},
+  {n:3,x:"Todos los que hayan mentido en una respuesta esta noche, tomen cinco. Ustedes sabrán."},
+  {n:3,x:"El que lleve menos tragos toma tres. Se está escondiendo."}
+];
+
+/* ================== ESTADO ================== */
+let players = [];      // [{name, shots, mate}]  mate = nombre de su pareja o null
+let levels = [1,2];    // niveles activos de la baraja
+let deck = [], di = 0, turn = 0, drawn = 0, cur = null;
+
+const $ = id => document.getElementById(id);
+const show = s => document.querySelectorAll('.screen').forEach(e => e.classList.toggle('on', e.id === s));
+
+/* ---------- setup ---------- */
+function renderChips(){
+  $('chips').innerHTML = players.map((p,i)=>
+    `<div class="chip"><b>${esc(p.name)}</b><span data-i="${i}">×</span></div>`).join('');
+  $('startBtn').disabled = players.length < 2;
+  renderCouples();
+}
+
+/* ---------- parejas ---------- */
+const mateOf = p => p.mate ? players.find(x => x.name === p.mate) : null;
+
+function unpair(p){
+  const m = mateOf(p);
+  if(m) m.mate = null;
+  p.mate = null;
+}
+
+function renderCouples(){
+  $('coupleBlock').style.display = players.length >= 3 ? '' : 'none';
+
+  // opciones: solo quien no tenga pareja todavía
+  const free = players.filter(p => !p.mate);
+  const opts = n => `<option value="">${n}</option>` +
+    free.map(p => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+  $('mateA').innerHTML = opts('Jugador…');
+  $('mateB').innerHTML = opts('Su pareja…');
+  $('pairBtn').disabled = free.length < 2;
+  $('pairBtn').style.opacity = free.length < 2 ? .35 : 1;
+
+  // lista de parejas ya formadas, sin duplicar
+  const seen = new Set(), pairs = [];
+  players.forEach(p => {
+    if(!p.mate || seen.has(p.name)) return;
+    seen.add(p.name); seen.add(p.mate);
+    pairs.push([p.name, p.mate]);
+  });
+  $('couples').innerHTML = pairs.map(([a,b]) =>
+    `<div class="chip pair"><b>${esc(a)} 💕 ${esc(b)}</b><span data-pair="${esc(a)}">×</span></div>`).join('');
+}
+
+$('pairBtn').onclick = () => {
+  const a = players.find(p => p.name === $('mateA').value);
+  const b = players.find(p => p.name === $('mateB').value);
+  if(!a || !b || a === b) return;
+  unpair(a); unpair(b);
+  a.mate = b.name; b.mate = a.name;
+  renderCouples();
+};
+
+$('couples').onclick = e => {
+  const n = e.target.dataset.pair;
+  if(n === undefined) return;
+  unpair(players.find(p => p.name === n));
+  renderCouples();
+};
+const esc = s => s.replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+
+function addPlayer(){
+  const v = $('name').value.trim();
+  if(!v || players.length >= 16) return;
+  if(players.some(p => p.name.toLowerCase() === v.toLowerCase())){ $('name').value=''; return; }
+  players.push({name:v, shots:0, mate:null});
+  $('name').value = '';
+  $('name').focus();
+  renderChips();
+}
+$('addBtn').onclick = addPlayer;
+$('name').addEventListener('keydown', e => { if(e.key === 'Enter') addPlayer(); });
+$('chips').onclick = e => {
+  if(e.target.dataset.i === undefined) return;
+  unpair(players[+e.target.dataset.i]);       // si estaba emparejado, libera al otro
+  players.splice(+e.target.dataset.i, 1);
+  renderChips();
+};
+$('modes').onclick = e => {
+  const m = e.target.closest('.mode'); if(!m) return;
+  document.querySelectorAll('.mode').forEach(x => x.classList.remove('sel'));
+  m.classList.add('sel');
+  levels = m.dataset.lv.split(',').map(Number);
+};
+
+/* ---------- baraja ---------- */
+function buildDeck(){
+  const keep = c => levels.includes(c.n);
+  deck = [
+    ...RETOS.filter(keep).map(c => ({...c, t:'reto'})),
+    ...PREGUNTAS.filter(keep).map(c => ({...c, t:'pregunta'})),
+    ...GRUPO.filter(keep).map(c => ({...c, t:'grupo'}))
+  ];
+  shuffle(deck); di = 0;
+}
+function shuffle(a){
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+}
+/* A quién apunta el {P} de esta carta.
+   Regla de parejas: si la carta es picante (n:2)…
+     · el que tiene pareja SIEMPRE le toca a su pareja
+     · el que no tiene pareja nunca puede apuntarle a alguien emparejado
+   Devuelve null si no hay nadie válido (la carta se descarta para este turno). */
+function pickTarget(c, me){
+  const spicy = c.n >= 2;
+  if(spicy && players[me].mate) return players[me].mate;
+  const pool = players.filter((p,i) => i !== me && !(spicy && p.mate));
+  if(!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)].name;
+}
+
+/* ¿Esta carta se le puede dar a este jugador? */
+function playable(c, me){
+  // las picantes que involucran a todo el grupo no aplican si tienes pareja aquí
+  if(c.n >= 2 && c.grp && players[me].mate) return false;
+  if(c.x.includes('{P}') && pickTarget(c, me) === null) return false;
+  return true;
+}
+
+const KIND = {reto:'RETO', pregunta:'PREGUNTA', grupo:'TODOS'};
+const CLS  = {reto:'', pregunta:'q', grupo:'g'};
+const HEAT = {1:'🎉 fiesta', 2:'🔥 sin filtro', 3:'😈 sin límites'};
+
+// primera carta jugable a partir de `from`; -1 si no hay
+function findPlayable(from){
+  for(let k = from; k < deck.length; k++) if(playable(deck[k], turn)) return k;
+  return -1;
+}
+
+function draw(){
+  if(di >= deck.length){ shuffle(deck); di = 0; }
+  let j = findPlayable(di);
+  if(j < 0){ shuffle(deck); di = 0; j = findPlayable(0); }  // ninguna sirve: rebaraja
+  if(j < 0) j = di;                                          // caso imposible: usa la que toque
+  [deck[di], deck[j]] = [deck[j], deck[di]];                 // las saltadas siguen en la baraja
+  const c = cur = deck[di++];
+  drawn++;
+
+  const target = pickTarget(c, turn);
+  const locked = c.n >= 2 && players[turn].mate && c.x.includes('{P}');
+  const tragos = cost(c);
+
+  $('player').textContent = players[turn].name;
+  $('card').className = 'card ' + CLS[c.t] + (c.n === 3 ? ' lv3' : '');
+  $('kind').textContent = KIND[c.t];
+  $('text').textContent = c.x.replace(/\{P\}/g, target || players[(turn + 1) % players.length].name);
+  $('heat').textContent = HEAT[c.n] + (locked ? ' · en pareja 💕' : '');
+  $('counter').textContent = `Carta ${drawn}`;
+
+  const group = c.t === 'grupo';
+  $('pen').style.display = group ? 'none' : '';
+  $('pen').textContent = `Si no: ${tragos} ${tragos === 1 ? 'trago' : 'tragos'}`;
+  $('doneBtn').textContent = group ? 'LISTO 😎' : 'LO HICE 😎';
+  $('drinkBtn').textContent = `TOMO ${tragos} 🥃`;
+  $('drinkBtn').style.display = group ? 'none' : '';
+}
+
+const cost = c => c.d || CASTIGO[c.n];
+
+function next(drank){
+  if(drank) players[turn].shots += cost(cur);
+  turn = (turn + 1) % players.length;
+  draw();
+}
+$('doneBtn').onclick  = () => next(false);
+$('drinkBtn').onclick = () => next(true);
+$('skipBtn').onclick  = () => draw();
+
+/* ---------- navegación ---------- */
+$('startBtn').onclick = () => { buildDeck(); turn = 0; drawn = 0; show('s-game'); draw(); };
+$('quitBtn').onclick  = () => show('s-setup');
+$('backBtn').onclick  = () => show('s-game');
+$('scoreBtn').onclick = () => { renderScores(); show('s-score'); };
+$('resetBtn').onclick = () => {
+  players.forEach(p => p.shots = 0);
+  buildDeck(); turn = 0; drawn = 0;
+  show('s-setup');
+};
+
+function renderScores(){
+  const sorted = [...players].sort((a,b) => b.shots - a.shots);
+  const max = sorted[0] ? sorted[0].shots : 0;
+  $('list').innerHTML = sorted.map(p =>
+    `<div class="item${p.shots === max && max > 0 ? ' lead' : ''}">
+       <b>${esc(p.name)}</b>
+       <i>${p.shots ? `${p.shots} 🥃` : '—'}</i>
+     </div>`).join('');
+}
+
+/* ---------- teclado ---------- */
+document.addEventListener('keydown', e => {
+  if(!$('s-game').classList.contains('on')) return;
+  if(e.key === ' '  ){ e.preventDefault(); next(false); }
+  if(e.key === 'Enter'){ e.preventDefault(); next(true); }
+});
+
+$('name').focus();
+</script>
+</body>
+</html>

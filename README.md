@@ -1,177 +1,146 @@
-# DJ LÜMEN Website
+# lifeonfullvolume.com
 
-A modern, responsive one-page bilingual website for DJ LÜMEN built with React, TypeScript, Tailwind CSS, and Framer Motion.
+The LÜMEN site. One Next.js codebase serving two domains:
 
-## Features
+| Domain | What it serves |
+| --- | --- |
+| `lifeonfullvolume.com` | The DJ booking site |
+| `lab.lifeonfullvolume.com` | Side projects (the "Lab") |
 
-- **🌍 Bilingual Support**: Full English/Spanish translation system with language toggle
-- **🎨 Theme Controller**: Dynamic section-based theming with smooth transitions
-  - "Club" palette (deep blues/purples/black) for most sections
-  - "Sunset" palette (warm oranges/browns/golds) for Sunset Sessions and Watch sections
-- **📱 Responsive Design**: Mobile-first approach with touch-friendly interactions
-- **⚡ Performance Optimized**: Lazy loading, responsive images, and smooth animations
-- **♿ Accessibility**: Semantic HTML, keyboard navigation, and screen reader support
-- **✨ Modern UI**: Glass morphism effects, gradient text, and smooth transitions
+The split is deliberate. Bookers and promoters never land on the party games,
+and the games never dilute the booking pitch — but there is only one project to
+maintain, one design system and one deploy.
 
-## Sections
+Built with Next.js 16 (App Router), React 19, Tailwind v4 and TypeScript.
 
-- **Hero**: Logo, tagline, and action buttons with image carousel (English only)
-- **About**: Bio and artist information (bilingual)
-- **Watch**: Lazy-loaded YouTube video embeds (bilingual)
-- **Sunset Sessions**: Special themed section with warm colors (bilingual)
-- **Experience**: Highlights and achievements (bilingual)
-- **Gigs**: Upcoming events (hidden when empty, bilingual)
-- **Gallery**: Responsive image grid with "Coming Soon" overlay (bilingual)
-- **Contact**: Email/WhatsApp buttons and social links (bilingual)
-- **Tech**: Technical requirements and rider download (bilingual)
+---
 
-## Setup
+## Running it
 
-1. **Install dependencies:**
 ```bash
 npm install
+npm run dev          # http://localhost:3000
 ```
 
-2. **Start development server:**
-```bash
-npm run dev
-```
-The site will be available at `http://localhost:3000`
+| Script | Does |
+| --- | --- |
+| `npm run dev` | Dev server |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript, no emit |
+| `npm run images` | Convert new photos to WebP (see below) |
 
-3. **Build for production:**
-```bash
-npm run build
-```
-
-4. **Preview production build:**
-```bash
-npm run preview
-```
-
-## Project Structure
-
-```
-lumenWeb/
-├── public/
-│   ├── images/
-│   │   ├── hero/          # Hero carousel images
-│   │   └── gallery/       # Gallery images
-│   └── downloads/         # Technical rider PDF
-├── src/
-│   ├── components/        # React components
-│   ├── contexts/          # React contexts (LanguageContext)
-│   ├── translations.ts    # All site content and translations
-│   ├── App.tsx            # Main app component
-│   └── main.tsx           # Entry point
-└── dist/                  # Production build (generated)
-```
-
-## Content Management
-
-### Adding/Updating Content
-
-All content is managed in `src/translations.ts`:
-- **English content**: `translations.en`
-- **Spanish content**: `translations.es`
-- **Navigation labels**: `translations.{lang}.nav.labels`
-- **Video IDs**: `translations.{lang}.videos`
-- **Contact info**: `translations.{lang}.contact`
-
-### Adding Gallery Images
-
-1. Add image files to `/public/images/gallery/`
-2. Update the `galleryImages` array in `src/components/Gallery.tsx`:
-```typescript
-const galleryImages: GalleryImage[] = [
-  { src: '/images/gallery/your-image.jpg', alt: 'Description', caption: 'Caption' },
-];
-```
-
-### Adding Hero Carousel Images
-
-1. Add image files to `/public/images/hero/`
-2. Update the `carouselImages` array in `src/components/Hero.tsx`
-
-## Deployment
-
-### Vercel (Recommended)
-
-1. Push code to GitHub
-2. Import repository in [Vercel](https://vercel.com)
-3. Vercel will auto-detect Vite settings
-4. Deploy automatically on every push
-
-### Manual Build
+To see the Lab on its own host locally, send the header:
 
 ```bash
-npm run build
-# Upload the `dist/` folder to your hosting service
+curl -H "Host: lab.lifeonfullvolume.com" http://localhost:3000/
 ```
 
-## Technical Details
+---
 
-- **Framework**: React 18 with TypeScript
-- **Styling**: Tailwind CSS with custom CSS variables
-- **Animations**: Framer Motion with reduced motion support
-- **Icons**: Lucide React
-- **Build Tool**: Vite
-- **Theme System**: CSS custom properties with IntersectionObserver
-- **Language System**: React Context API with localStorage persistence
+## Editing content
 
-## Browser Support
+**No user-facing text lives in components.** Everything is in `content/`:
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+| File | Holds |
+| --- | --- |
+| `content/copy.ts` | All English and Spanish wording |
+| `content/site.ts` | Email, WhatsApp, socials, video IDs, venue list |
+| `content/gallery.ts` | Photo list, with alt text in both languages |
+| `content/gigs.ts` | Upcoming and past dates |
+| `content/projects.ts` | Lab projects |
 
-## Development
+### Adding a gig
 
-### Debugging
+Add an entry to the `gigs` array in `content/gigs.ts`:
 
-VS Code debug configuration is set up in `.vscode/launch.json`:
-- Start dev server: `npm run dev`
-- Press F5 to launch Chrome with debugging enabled
+```ts
+{ date: '2026-09-12', venue: 'Icon', city: 'Madrid', country: 'Spain' },
+```
 
-### Key Files
+Order does not matter — the site sorts by date, hides anything in the past from
+"upcoming", and moves it to a "Previously" list. Add `private: true` for a
+private booking (shows as *Private event*, no ticket link), or `url: '...'` for
+a ticket link. When the array is empty the page shows a "get in touch" panel
+instead of an empty list.
 
-- `src/translations.ts` - All site content and translations
-- `src/components/` - All React components
-- `src/contexts/LanguageContext.tsx` - Language switching logic
-- `tailwind.config.ts` - Tailwind CSS configuration
-- `vite.config.ts` - Vite build configuration
+### Adding photos
 
-## TODO: Content Updates
+1. Drop the files into `public/images/gallery/`
+2. Run `npm run images` — converts to WebP, caps the width, strips metadata,
+   and moves the originals to `.image-originals/` (kept on disk, never
+   committed or deployed)
+3. Add an entry to `content/gallery.ts` with the new `.webp` filename, its real
+   pixel dimensions and alt text in both languages
 
-### Images
-- [x] Hero carousel images added
-- [x] Gallery images added (Halloween 2025)
-- [ ] Add Open Graph image (`/public/images/og-image.jpg`) - 1200x630px recommended
-- [ ] Optimize images (WebP/AVIF formats)
+Dimensions are required so the grid can reserve space and avoid layout shift.
 
-### Videos
-- [x] YouTube video IDs configured in `translations.ts`
-- [ ] Update with latest video IDs as needed
+### Adding a Lab project
 
-### Contact Information
-- [x] Email: `lifeonfullvolume@gmail.com`
-- [x] WhatsApp: `+16507144540`
-- [x] YouTube: `@LifeOnFullVolume`
+For a self-contained HTML file (like the Tequila game):
 
-### Technical Rider
-- [ ] Upload technical rider PDF to `/public/downloads/lumen-tech-rider.pdf`
-- [ ] Update `tech.riderUrl` in `translations.ts` if needed
+1. Put the file in `public/lab/`, e.g. `public/lab/mything.html`
+2. Add an entry to `content/projects.ts` with `kind: 'embed'` and
+   `file: 'mything.html'`
 
-### Social Media
-- [x] YouTube active
-- [ ] Instagram (coming soon - disabled in UI)
-- [ ] TikTok (coming soon - disabled in UI)
+It appears on the Lab index and gets its own page with the project embedded.
 
-### Gallery
-- [x] Images added
-- [ ] Remove "Coming Soon" overlay when ready to show gallery
-- [ ] Add more images as available
+---
 
-## License
+## How the two domains work
 
-© 2024 DJ LÜMEN. All rights reserved.
+`proxy.ts` (Next 16's renamed middleware) does two things:
+
+1. **Locale prefixes.** Every main-site URL carries `/en` or `/es`. A visitor
+   hitting `/` is redirected to their best match from their cookie, then their
+   `Accept-Language` header. Both languages are separately indexable and
+   cross-linked with `hreflang`.
+2. **Lab host rewriting.** On `lab.lifeonfullvolume.com`, `/` renders the Lab
+   index and `/tequila` renders that project — the `/en/lab` prefix is hidden.
+   Pages detect which host served them via a request header and generate short
+   or long links accordingly, so the same components work on both domains.
+
+---
+
+## Deploying
+
+Vercel, from this repo.
+
+1. Push to GitHub and import the repo in Vercel (it auto-detects Next.js)
+2. In **Settings → Domains**, add **both**:
+   - `lifeonfullvolume.com`
+   - `lab.lifeonfullvolume.com`
+3. Point DNS at Vercel:
+   - `lifeonfullvolume.com` → the A record Vercel gives you
+   - `lab` → `CNAME` to `cname.vercel-dns.com`
+
+Both domains hit the same deployment; `proxy.ts` decides what each one renders.
+No second project, no second deploy.
+
+---
+
+## Things deliberately left empty
+
+These are placeholders waiting on real material, not oversights:
+
+- **Testimonials** — `copy.ts` has a `testimonials.items` array that is empty,
+  and the section hides itself while it stays that way. Add real quotes from
+  real clients only.
+- **Gigs** — empty until there are dates to announce.
+- **Technical rider PDF** — the EPK lists the requirements as text. If a PDF is
+  wanted, drop it at `public/downloads/lumen-tech-rider.pdf` and link it.
+
+---
+
+## Checks
+
+```bash
+npm run build && npm run start
+sh scripts/smoke.sh          # every route, both hosts
+sh scripts/shots.sh ./shots  # screenshots, needs Chrome
+```
+
+Headless Chrome clamps the viewport to a 500px minimum while still cropping the
+screenshot to the requested width, so never screenshot below 500px — the
+right-hand side gets silently cut off and looks like a missing element.
