@@ -1,0 +1,259 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+
+   The brand idea is light in a dark room: warm near-black surfaces, a gold
+   "lumen" light source, and a sunset palette that takes over for the Sunset
+   Sessions material. Nothing here is pure black or pure grey — every neutral
+   carries a little warmth so photography sits in it naturally.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Surfaces, darkest to lightest */
+  --color-ink: #0a0908;
+  --color-ink-2: #121010;
+  --color-ink-3: #1b1815;
+  --color-ink-4: #262119;
+
+  /* Light sources */
+  --color-lumen: #ffc24b;
+  --color-lumen-soft: #ffd98a;
+  --color-ember: #ff5e3a;
+  --color-dusk: #8b3a62;
+
+  /* Light surfaces, used where the site needs to read as trustworthy */
+  --color-paper: #f6f2ea;
+  --color-paper-2: #ebe4d8;
+
+  /* Text */
+  --color-bone: #f4efe7;
+  --color-haze: #a9a29b;
+  --color-haze-dim: #6f6862;
+
+  --color-line: rgba(244, 239, 231, 0.1);
+  --color-line-strong: rgba(244, 239, 231, 0.22);
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-lumen);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lumen);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Display type is set tight and optically dark — it is the loudest thing
+     on the page, so it does the shouting instead of colour. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+@layer utilities {
+  /* Page-wide film grain. Keeps large flat dark areas from banding and gives
+     the "organic" side of organic afro-tech something to hold onto. */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-gradient-lumen {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-bone) 0%,
+      var(--color-lumen-soft) 45%,
+      var(--color-lumen) 70%,
+      var(--color-ember) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-sunset {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-lumen) 0%,
+      var(--color-ember) 55%,
+      var(--color-dusk) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* The light source motif: a soft radial bloom placed behind content. */
+  .bloom {
+    background-image: radial-gradient(
+      60% 50% at 50% 0%,
+      rgba(255, 194, 75, 0.18) 0%,
+      rgba(255, 94, 58, 0.07) 40%,
+      transparent 72%
+    );
+  }
+
+  .bloom-ember {
+    background-image: radial-gradient(
+      70% 60% at 50% 100%,
+      rgba(255, 94, 58, 0.22) 0%,
+      rgba(139, 58, 98, 0.1) 45%,
+      transparent 75%
+    );
+  }
+
+  /* A thin glowing rule — used to separate sections without a hard border. */
+  .beam {
+    height: 1px;
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-line-strong) 25%,
+      rgba(255, 194, 75, 0.55) 50%,
+      var(--color-line-strong) 75%,
+      transparent 100%
+    );
+  }
+
+  .edge-fade-x {
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .card-surface {
+    background-color: color-mix(in srgb, var(--color-ink-2) 88%, transparent);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal
+
+   The `js` class is added by the Reveal component at runtime, not by an inline
+   script — so if the bundle never loads, none of these rules apply and every
+   section renders plainly. Hiding content is opt-in, and only ever done by
+   code that has already proven it can un-hide it.
+--------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 1;
+}
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Marquee
+--------------------------------------------------------------------------- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* Slow, continuous drift on the hero art — suggests movement without
+   distracting from the type sitting on top of it. */
+@keyframes drift {
+  0%,
+  100% {
+    transform: scale(1.08) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.14) translate3d(0, -1.5%, 0);
+  }
+}
+
+.drift {
+  animation: drift 24s ease-in-out infinite;
+}
