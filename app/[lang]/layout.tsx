@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Bricolage_Grotesque, Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
@@ -110,6 +111,13 @@ export default async function RootLayout({
         </a>
         {children}
         <Reveal />
+        {/*
+          Vercel Web Analytics. Cookieless and with no cross-site identifiers,
+          so it needs no consent banner under GDPR — which matters for a
+          Spain-based business. This layout is the root for the main site and
+          the lab, so both domains are covered.
+        */}
+        <Analytics />
       </body>
     </html>
   )
