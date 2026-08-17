@@ -103,9 +103,15 @@ export default async function ProjectPage({
             <iframe
               src={`/lab/${project.file}`}
               title={project.title}
-              // The game is a self-contained page from the same origin; the
-              // sandbox still blocks it from navigating the parent frame.
-              sandbox="allow-scripts allow-same-origin allow-popups"
+              /*
+                No allow-same-origin. Combined with allow-scripts it hands the
+                frame full access to this origin — cookies, storage, the lot —
+                which defeats the point of sandboxing a page that is mostly
+                third-party-shaped content. The games are self-contained and
+                use no storage or network, so they lose nothing by running in
+                an opaque origin.
+              */
+              sandbox="allow-scripts allow-popups"
               loading="lazy"
               className="h-[min(78svh,900px)] w-full border-0"
             />

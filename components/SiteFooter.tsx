@@ -4,7 +4,8 @@ import { Mail } from 'lucide-react'
 import { InstagramIcon, WhatsappIcon, YoutubeIcon } from '@/components/BrandIcons'
 import { Beam, CTA } from '@/components/ui'
 import type { Copy } from '@/content/copy'
-import { mailtoLink, site, whatsappLink } from '@/content/site'
+import { ContactButton } from '@/components/ContactActions'
+import { site } from '@/content/site'
 import type { Locale } from '@/lib/i18n'
 
 export function SiteFooter({ locale, t }: { locale: Locale; t: Copy }) {
@@ -19,11 +20,12 @@ export function SiteFooter({ locale, t }: { locale: Locale; t: Copy }) {
     { href: `${base}/epk`, label: t.nav.epk },
   ]
 
-  const channels = [
+  // Social profiles are public pages, so their URLs stay in the markup.
+  // WhatsApp and email are rendered as buttons below instead, because their
+  // hrefs would contain the details being protected.
+  const socials = [
     { href: site.social.youtube, label: t.common.youtube, Icon: YoutubeIcon },
     { href: site.social.instagram, label: t.common.instagram, Icon: InstagramIcon },
-    { href: whatsappLink(), label: t.common.whatsapp, Icon: WhatsappIcon },
-    { href: mailtoLink(), label: t.common.email, Icon: Mail },
   ]
 
   return (
@@ -70,7 +72,7 @@ export function SiteFooter({ locale, t }: { locale: Locale; t: Copy }) {
                 {t.footer.connect}
               </h2>
               <ul className="mt-5 space-y-3">
-                {channels.map(({ href, label, Icon }) => (
+                {socials.map(({ href, label, Icon }) => (
                   <li key={label}>
                     <a
                       href={href}
@@ -83,6 +85,24 @@ export function SiteFooter({ locale, t }: { locale: Locale; t: Copy }) {
                     </a>
                   </li>
                 ))}
+                <li>
+                  <ContactButton
+                    kind="whatsapp"
+                    className="inline-flex items-center gap-2.5 text-sm text-haze transition hover:text-lumen"
+                  >
+                    <WhatsappIcon size={15} />
+                    {t.common.whatsapp}
+                  </ContactButton>
+                </li>
+                <li>
+                  <ContactButton
+                    kind="email"
+                    className="inline-flex items-center gap-2.5 text-sm text-haze transition hover:text-lumen"
+                  >
+                    <Mail size={15} aria-hidden />
+                    {t.common.email}
+                  </ContactButton>
+                </li>
               </ul>
             </div>
           </div>

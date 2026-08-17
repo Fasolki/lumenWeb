@@ -13,16 +13,9 @@ export const site = {
   /** Host that middleware rewrites onto the /lab route tree. */
   labHost: 'lab.lifeonfullvolume.com',
 
-  contact: {
-    email: 'lifeonfullvolume@gmail.com',
-    // Primary line. Every WhatsApp button on the site points here.
-    whatsapp: '+34665232662',
-    whatsappDisplay: '+34 665 232 662',
-    // Alternate line, listed in the press kit for US promoters. Deliberately
-    // not wired to any button, so enquiries land in one inbox.
-    whatsappAlt: '+16507144540',
-    whatsappAltDisplay: '+1 650 714 4540',
-  },
+  // Email and phone deliberately do NOT live here. They are held encoded in
+  // lib/contact.ts and assembled in the browser on click, so they never reach
+  // the served HTML where harvesters would find them.
 
   social: {
     youtube: 'https://www.youtube.com/@LifeOnFullVolume',
@@ -53,18 +46,7 @@ export const site = {
   ],
 } as const
 
-// `number` is widened to string: `site` is `as const`, so inferring the type
-// from the default would pin it to the primary number's literal type.
-export function whatsappLink(message?: string, number: string = site.contact.whatsapp) {
-  const digits = number.replace(/[^0-9]/g, '')
-  // A blank `text` param renders an empty draft on some clients, so omit it.
-  return message
-    ? `https://wa.me/${digits}?text=${encodeURIComponent(message)}`
-    : `https://wa.me/${digits}`
-}
-
-export function mailtoLink(subject?: string) {
-  return subject
-    ? `mailto:${site.contact.email}?subject=${encodeURIComponent(subject)}`
-    : `mailto:${site.contact.email}`
-}
+// whatsappLink() and mailtoLink() used to live here. They were removed on
+// purpose: any helper that builds a contact URL during server rendering puts
+// the address straight into the HTML. Use the components in
+// components/ContactActions.tsx, which build the URL in the browser instead.

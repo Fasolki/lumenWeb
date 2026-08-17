@@ -48,7 +48,14 @@ export function proxy(request: NextRequest) {
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`),
   )
 
-  if (hasLocale) return NextResponse.next()
+  if (hasLocale) {
+    // Strip any inbound copy of the surface header. It is set by this proxy
+    // and read by server components, so a client that sends its own must not
+    // be able to change what the server renders.
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.delete(SURFACE_HEADER)
+    return NextResponse.next({ request: { headers: requestHeaders } })
+  }
 
   const url = request.nextUrl.clone()
   url.pathname = `/${locale}${pathname === '/' ? '' : pathname}`
@@ -59,6 +66,11 @@ export function proxy(request: NextRequest) {
     path: '/',
     maxAge: 60 * 60 * 24 * 365,
     sameSite: 'lax',
+    // Not HttpOnly: the language toggle writes this from the client, and
+    // document.cookie cannot set HttpOnly cookies. The value is validated
+    // against the locale list before it is ever used, so a tampered cookie
+    // just falls back to the default.
+    secure: request.nextUrl.protocol === 'https:',
   })
   return response
 }

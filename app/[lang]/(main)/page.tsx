@@ -36,8 +36,9 @@ export default async function HomePage({
     url: `${site.url}/${lang}`,
     genre: ['Afro House', 'Organic House', 'Deep House', 'Tech House'],
     description: t.meta.description,
-    email: site.contact.email,
-    telephone: site.contact.whatsapp,
+    // No email or telephone here. Structured data is plain text in the HTML,
+    // which makes it one of the easiest things on a page for a harvester to
+    // read. Contact details are revealed in the browser instead.
     address: { '@type': 'PostalAddress', addressLocality: 'Madrid', addressCountry: 'ES' },
     sameAs: [site.social.youtube, site.social.instagram, site.social.tiktok],
   }
@@ -46,7 +47,11 @@ export default async function HomePage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        // The data is static, but escaping `<` is what stops a future edit
+        // from being able to close this script tag and inject markup.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
       />
 
       <Hero locale={lang} t={t} />

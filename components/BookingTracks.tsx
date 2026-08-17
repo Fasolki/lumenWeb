@@ -1,8 +1,8 @@
 import { Check } from 'lucide-react'
 
-import { CTA, cn } from '@/components/ui'
+import { ContactButton } from '@/components/ContactActions'
+import { buttonClass, cn } from '@/components/ui'
 import type { Copy } from '@/content/copy'
-import { mailtoLink, whatsappLink } from '@/content/site'
 
 /**
  * The two booking paths, side by side.
@@ -88,23 +88,25 @@ export function BookingTracks({ t }: { t: Copy }) {
               </ul>
 
               <div className="mt-10 flex flex-wrap gap-3 pt-2">
-                <CTA
-                  href={whatsappLink(data.subject)}
-                  variant={light ? 'dark' : 'primary'}
+                {/* Buttons, not links: the enquiry subject is fine in the
+                    markup, but the destination address is not. */}
+                <ContactButton
+                  kind="whatsapp"
+                  message={data.subject}
+                  className={buttonClass({ variant: light ? 'dark' : 'primary' })}
                 >
                   {data.cta}
-                </CTA>
-                <CTA
-                  href={mailtoLink(data.subject)}
-                  variant={light ? 'ghost' : 'outline'}
-                  className={
-                    light
-                      ? 'border border-ink/25 text-ink/75 hover:border-ink hover:text-ink'
-                      : undefined
-                  }
+                </ContactButton>
+                <ContactButton
+                  kind="email"
+                  message={data.subject}
+                  className={cn(
+                    buttonClass({ variant: light ? 'ghost' : 'outline' }),
+                    light && 'border border-ink/25 text-ink/75 hover:border-ink hover:text-ink',
+                  )}
                 >
                   {t.book.email}
-                </CTA>
+                </ContactButton>
               </div>
             </div>
           </article>
