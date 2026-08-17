@@ -4,18 +4,70 @@ import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 
-import { cn } from '@/components/ui'
 import type { Copy } from '@/content/copy'
-import type { Photo } from '@/content/gallery'
+import type { GalleryItem } from '@/content/gallery'
 import { fill } from '@/content/copy'
 import type { Locale } from '@/lib/i18n'
+
+/**
+ * A silent looping clip in the grid.
+ *
+ * Nothing downloads until the tile is near the viewport: preload is "none"
+ * and the first play() call is what triggers the fetch. Playback pauses again
+ * on the way out, so a long scroll never leaves several videos decoding at
+ * once. Visitors who ask for reduced motion get the poster frame and nothing
+ * else — an autoplaying loop is exactly what that setting is asking us not to
+ * do.
+ */
+function VideoTile({ item, alt }: { item: GalleryItem; alt: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Autoplay can still be refused (low power mode, for one). The
+          // poster stays up if so, which is a perfectly good fallback.
+          void video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { rootMargin: '200px 0px', threshold: 0.1 },
+    )
+
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <video
+      ref={ref}
+      src={item.src}
+      poster={item.poster}
+      width={item.width}
+      height={item.height}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label={alt}
+      className="h-auto w-full transition duration-700 group-hover:scale-[1.04]"
+    />
+  )
+}
 
 export function GalleryGrid({
   photos,
   locale,
   t,
 }: {
-  photos: Photo[]
+  photos: GalleryItem[]
   locale: Locale
   t: Copy
 }) {
@@ -59,29 +111,33 @@ export function GalleryGrid({
   return (
     <>
       <div className="columns-2 gap-3 md:columns-3 md:gap-4 [&>*]:mb-3 md:[&>*]:mb-4">
-        {photos.map((photo, i) => (
+        {photos.map((item, i) => (
           <button
-            key={photo.src}
+            key={item.src}
             type="button"
             onClick={(e) => {
               triggerRef.current = e.currentTarget
               setOpen(i)
             }}
-            aria-label={`${t.gallery.openImage}: ${photo.alt[locale]}`}
+            aria-label={`${t.gallery.openImage}: ${item.alt[locale]}`}
             data-reveal
             style={{ ['--reveal-delay' as string]: `${Math.min(i, 8) * 45}ms` }}
             className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl border border-line bg-ink-3"
           >
-            <Image
-              src={photo.src}
-              alt={photo.alt[locale]}
-              width={photo.width}
-              height={photo.height}
-              sizes="(max-width: 768px) 50vw, 33vw"
-              // The first screenful loads eagerly; everything below waits.
-              loading={i < 4 ? 'eager' : 'lazy'}
-              className="h-auto w-full transition duration-700 group-hover:scale-[1.04]"
-            />
+            {item.kind === 'video' ? (
+              <VideoTile item={item} alt={item.alt[locale]} />
+            ) : (
+              <Image
+                src={item.src}
+                alt={item.alt[locale]}
+                width={item.width}
+                height={item.height}
+                sizes="(max-width: 768px) 50vw, 33vw"
+                // The first screenful loads eagerly; everything below waits.
+                loading={i < 4 ? 'eager' : 'lazy'}
+                className="h-auto w-full transition duration-700 group-hover:scale-[1.04]"
+              />
+            )}
             <span
               aria-hidden
               className="absolute inset-0 bg-ink/0 transition duration-500 group-hover:bg-ink/25"
@@ -136,15 +192,31 @@ export function GalleryGrid({
             className="flex max-h-[90svh] w-full max-w-5xl flex-col items-center gap-4 px-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={active.src}
-              alt={active.alt[locale]}
-              width={active.width}
-              height={active.height}
-              sizes="100vw"
-              className={cn('max-h-[78svh] w-auto rounded-lg object-contain')}
-              priority
-            />
+            {active.kind === 'video' ? (
+              // Controls here, unlike the grid: at full size someone may want
+              // to scrub or pause. Still muted — these clips have no audio.
+              <video
+                key={active.src}
+                src={active.src}
+                poster={active.poster}
+                controls
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="max-h-[78svh] w-auto rounded-lg"
+              />
+            ) : (
+              <Image
+                src={active.src}
+                alt={active.alt[locale]}
+                width={active.width}
+                height={active.height}
+                sizes="100vw"
+                className="max-h-[78svh] w-auto rounded-lg object-contain"
+                priority
+              />
+            )}
             <figcaption className="text-center text-sm text-haze">
               {active.alt[locale]}
               <span className="mt-1 block text-xs uppercase tracking-[0.24em] text-haze-dim">
