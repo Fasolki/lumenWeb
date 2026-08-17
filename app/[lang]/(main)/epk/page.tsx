@@ -8,7 +8,7 @@ import { CopyButton } from '@/components/CopyButton'
 import { PageIntro } from '@/components/PageIntro'
 import { CTA, Section, SectionTitle } from '@/components/ui'
 import { getCopy } from '@/content/copy'
-import { gallery } from '@/content/gallery'
+import { photos } from '@/content/gallery'
 import { mailtoLink, site, whatsappLink } from '@/content/site'
 import { isLocale } from '@/lib/i18n'
 
@@ -45,7 +45,9 @@ export default async function EpkPage({
   const shortBio = `${t.hero.tagline}. ${t.about.body[0]}`
   const longBio = [...t.about.body, t.sunset.body[1]].join('\n\n')
 
-  const pressPhotos = gallery.slice(0, 8)
+  // Stills only: this section renders with next/image, and the gallery now
+  // also holds video.
+  const pressPhotos = photos.slice(0, 8)
 
   return (
     <>
