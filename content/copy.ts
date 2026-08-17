@@ -297,6 +297,9 @@ export const copy = {
       youtube: 'YouTube',
       instagram: 'Instagram',
       tiktok: 'TikTok',
+      reveal: 'show',
+      noScriptContact:
+        'Contact details are shown on click. With JavaScript off, reach me on Instagram or YouTube instead.',
       backHome: 'Back home',
       notFoundTitle: 'Lost the signal',
       notFoundBody: 'That page does not exist. The music does.',
@@ -599,6 +602,9 @@ export const copy = {
       youtube: 'YouTube',
       instagram: 'Instagram',
       tiktok: 'TikTok',
+      reveal: 'mostrar',
+      noScriptContact:
+        'Los datos de contacto se muestran al hacer clic. Sin JavaScript, escríbeme por Instagram o YouTube.',
       backHome: 'Volver al inicio',
       notFoundTitle: 'Se perdió la señal',
       notFoundBody: 'Esa página no existe. La música sí.',

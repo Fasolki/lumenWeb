@@ -4,11 +4,12 @@ import { ArrowRight, Clock, Mail } from 'lucide-react'
 
 import { WhatsappIcon } from '@/components/BrandIcons'
 import { BookingTracks } from '@/components/BookingTracks'
+import { ContactButton, RevealContact } from '@/components/ContactActions'
 import { Faq } from '@/components/Faq'
 import { PageIntro } from '@/components/PageIntro'
-import { CTA, Section, SectionTitle } from '@/components/ui'
+import { CTA, Section, SectionTitle, buttonClass } from '@/components/ui'
 import { fill, getCopy } from '@/content/copy'
-import { mailtoLink, site, whatsappLink } from '@/content/site'
+import { site } from '@/content/site'
 import { isLocale } from '@/lib/i18n'
 
 export async function generateMetadata({
@@ -45,15 +46,18 @@ export default async function BookPage({
         subtitle={fill(t.book.subtitle, { hours: site.responseHours })}
       >
         <div className="mt-9 flex flex-wrap items-center gap-4">
-          <CTA href={whatsappLink()} size="lg">
+          <ContactButton kind="whatsapp" className={buttonClass({ size: 'lg' })}>
             <WhatsappIcon size={17} />
             {t.book.whatsapp}
-          </CTA>
+          </ContactButton>
           <span className="text-sm text-haze-dim">{t.book.or}</span>
-          <CTA href={mailtoLink()} variant="outline" size="lg">
+          <ContactButton
+            kind="email"
+            className={buttonClass({ variant: 'outline', size: 'lg' })}
+          >
             <Mail size={17} aria-hidden />
             {t.book.email}
-          </CTA>
+          </ContactButton>
         </div>
 
         <p className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-line px-4 py-2 text-sm text-haze">
@@ -103,22 +107,21 @@ export default async function BookPage({
             </div>
 
             <div className="mt-2 space-y-3 border-t border-line pt-6 text-sm">
-              <a
-                href={mailtoLink()}
-                className="flex items-center gap-2.5 text-haze transition hover:text-lumen"
-              >
-                <Mail size={15} aria-hidden />
-                {site.contact.email}
-              </a>
-              <a
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-haze transition hover:text-lumen"
-              >
-                <WhatsappIcon size={15} />
-                {site.contact.whatsappDisplay}
-              </a>
+              <RevealContact
+                kind="email"
+                label={t.common.reveal}
+                icon={<Mail size={15} aria-hidden />}
+                className="text-haze"
+              />
+              <RevealContact
+                kind="whatsapp"
+                label={t.common.reveal}
+                icon={<WhatsappIcon size={15} />}
+                className="text-haze"
+              />
+              <noscript>
+                <p className="text-haze-dim">{t.common.noScriptContact}</p>
+              </noscript>
             </div>
           </div>
         </div>

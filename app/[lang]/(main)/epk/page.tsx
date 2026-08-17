@@ -9,7 +9,8 @@ import { PageIntro } from '@/components/PageIntro'
 import { CTA, Section, SectionTitle } from '@/components/ui'
 import { getCopy } from '@/content/copy'
 import { photos } from '@/content/gallery'
-import { mailtoLink, site, whatsappLink } from '@/content/site'
+import { RevealContact } from '@/components/ContactActions'
+import { site } from '@/content/site'
 import { isLocale } from '@/lib/i18n'
 
 export async function generateMetadata({
@@ -147,37 +148,35 @@ export default async function EpkPage({
               {t.epk.contactBlock}
             </h2>
             <div className="mt-6 space-y-4">
-              <a
-                href={mailtoLink()}
-                className="flex items-center gap-3 text-lg transition hover:text-lumen"
-              >
-                <Mail size={17} aria-hidden />
-                {site.contact.email}
-              </a>
-              <a
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-lg transition hover:text-lumen"
-              >
-                <WhatsappIcon size={17} />
-                {site.contact.whatsappDisplay}
-              </a>
-              {/* Listed for US promoters. The buttons elsewhere on the site
-                  all use the primary line, so enquiries stay in one place. */}
-              <a
-                href={whatsappLink(undefined, site.contact.whatsappAlt)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-wrap items-center gap-x-3 gap-y-1 text-haze transition hover:text-lumen"
-              >
-                <WhatsappIcon size={15} />
-                {site.contact.whatsappAltDisplay}
+              <RevealContact
+                kind="email"
+                label={t.common.reveal}
+                icon={<Mail size={17} aria-hidden />}
+                className="text-lg"
+              />
+              <RevealContact
+                kind="whatsapp"
+                label={t.common.reveal}
+                icon={<WhatsappIcon size={17} />}
+                className="text-lg"
+              />
+              {/* Listed for US promoters. Every button elsewhere uses the
+                  primary line, so enquiries stay in one place. */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <RevealContact
+                  kind="whatsappAlt"
+                  label={t.common.reveal}
+                  icon={<WhatsappIcon size={15} />}
+                  className="text-haze"
+                />
                 <span className="text-xs uppercase tracking-[0.18em] text-haze-dim">
                   {t.epk.altLine}
                 </span>
-              </a>
+              </div>
               <p className="pt-2 text-sm text-haze">{site.basedIn[lang]}</p>
+              <noscript>
+                <p className="text-sm text-haze-dim">{t.common.noScriptContact}</p>
+              </noscript>
             </div>
           </div>
 

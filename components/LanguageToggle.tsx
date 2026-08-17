@@ -12,7 +12,10 @@ const ONE_YEAR = 60 * 60 * 24 * 365
  *  the component does not own, which the React Compiler lint correctly flags
  *  when it happens inline in the component body. */
 function persistLocale(locale: Locale) {
-  document.cookie = `lumen_locale=${locale};path=/;max-age=${ONE_YEAR};samesite=lax`
+  // Secure only over HTTPS — setting it on http://localhost would make the
+  // browser drop the cookie and the choice would not stick in development.
+  const secure = window.location.protocol === 'https:' ? ';secure' : ''
+  document.cookie = `lumen_locale=${locale};path=/;max-age=${ONE_YEAR};samesite=lax${secure}`
 }
 
 /**

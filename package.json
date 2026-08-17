@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "images": "node scripts/optimize-images.mjs"
+    "images": "node scripts/optimize-images.mjs",
+    "audit:contact": "sh scripts/scan-contact-leaks.sh",
+    "audit:csp": "sh scripts/check-csp.sh"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
