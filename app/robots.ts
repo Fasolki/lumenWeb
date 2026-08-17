@@ -7,8 +7,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      // The press kit is a link you send, not a page to rank.
-      disallow: ['/en/epk', '/es/epk'],
+      // The info page is a link you hand out, not a page meant to rank
+      // against the home page for the same terms.
+      disallow: ['/en/info', '/es/info'],
     },
     sitemap: `${site.url}/sitemap.xml`,
     host: site.url,

@@ -20,7 +20,7 @@ export const copy = {
       gallery: 'Gallery',
       about: 'About',
       book: 'Book',
-      epk: 'Press kit',
+      info: 'Info',
       lab: 'Lab',
       menu: 'Menu',
       close: 'Close',
@@ -230,16 +230,64 @@ export const copy = {
         'Set length and start time',
         'Whether sound is already sorted',
       ],
-      epkNote:
-        'Booking on behalf of a venue or festival? The press kit has the bio, photos and technical rider ready to forward.',
-      epkCta: 'Open press kit',
+      infoNote:
+        'Booking on behalf of a venue or festival? The info page has the bio, photos, sets and technical requirements ready to forward.',
+      infoCta: 'Open info page',
     },
 
-    epk: {
-      eyebrow: 'Press kit',
-      title: 'EPK',
+    info: {
+      eyebrow: 'Press & info',
+      title: 'LÜMEN',
       subtitle:
-        'Everything a promoter, venue or agency needs in one place. Copy, photos and technical details — all cleared for use in promotion.',
+        'Everything a promoter, venue or client needs in one place — who I am, what I play, where I have played, and how to book me.',
+
+      factsTitle: 'At a glance',
+      facts: [
+        { label: 'Based in', value: 'Madrid, Spain — available worldwide' },
+        { label: 'Plays', value: 'Organic Afro-Tech · Jungle Rhythms · Deep House' },
+        { label: 'Sets', value: 'Warm-up, peak-time or closing' },
+        { label: 'Languages', value: 'English and Spanish' },
+        { label: 'Experience', value: 'Three years and counting' },
+        { label: 'Shaped by', value: 'CARRILLO. B, HUGEL, Fred again.., Badbwoy' },
+      ],
+
+      soundTitle: 'What I play',
+
+      historyTitle: 'Where I have played',
+      historyNote:
+        'Club floors, beach clubs, rooftops and private rooms across three countries.',
+      experience: [
+        {
+          title: 'Madrid nightlife',
+          body: 'Crowd-first club sets in Madrid, including rooms such as Icon and Shoko.',
+        },
+        {
+          title: 'Beach clubs, Mexico',
+          body: 'High-energy performances along the Mexican coast, sunset sessions included.',
+        },
+        {
+          title: 'Rooftop series, USA',
+          body: 'A rooftop party and sports tournament: one set spanning day into night.',
+        },
+        {
+          title: 'Private events & house parties',
+          body: 'Versatile sets built around the guests, the room and the run of show.',
+        },
+        {
+          title: 'Sunset Sessions',
+          body: 'Open-air live mixes recorded outdoors and published on YouTube — Afro-Tech and organic house with the ambience left in.',
+        },
+        {
+          title: 'YouTube',
+          body: 'A growing channel of multi-hour mixes and Sunset Sessions.',
+        },
+      ],
+
+      listenTitle: 'Hear a set',
+      listenNote:
+        'Full sets rather than clips — the fastest way to judge whether this fits your room.',
+
+      bioTitle: 'Bio',
       shortBio: 'Short bio',
       longBio: 'Full bio',
       copyBio: 'Copy bio',
@@ -264,6 +312,8 @@ export const copy = {
       contactBlock: 'Booking contact',
       altLine: 'Alternate line (USA)',
       socialBlock: 'Channels',
+      bookCta: 'Check a date',
+      bookNote: 'Have a date in mind? Availability and a real price within 24 hours.',
     },
 
     lab: {
@@ -319,7 +369,7 @@ export const copy = {
       gallery: 'Galería',
       about: 'Sobre mí',
       book: 'Reservar',
-      epk: 'Press kit',
+      info: 'Info',
       lab: 'Lab',
       menu: 'Menú',
       close: 'Cerrar',
@@ -523,16 +573,64 @@ export const copy = {
         'Duración del set y hora de inicio',
         'Si el sonido ya está resuelto',
       ],
-      epkNote:
-        '¿Reservas en nombre de una sala o un festival? El press kit tiene la biografía, las fotos y el rider técnico listos para reenviar.',
-      epkCta: 'Abrir press kit',
+      infoNote:
+        '¿Reservas en nombre de una sala o un festival? La página de info tiene la biografía, las fotos, los sets y los requisitos técnicos listos para reenviar.',
+      infoCta: 'Abrir página de info',
     },
 
-    epk: {
-      eyebrow: 'Press kit',
-      title: 'EPK',
+    info: {
+      eyebrow: 'Prensa e info',
+      title: 'LÜMEN',
       subtitle:
-        'Todo lo que necesita un promotor, una sala o una agencia en un solo sitio. Textos, fotos y detalles técnicos — libres para usar en promoción.',
+        'Todo lo que necesita un promotor, una sala o un cliente en un solo sitio — quién soy, qué pincho, dónde he pinchado y cómo contratarme.',
+
+      factsTitle: 'De un vistazo',
+      facts: [
+        { label: 'Con base en', value: 'Madrid, España — disponible en todo el mundo' },
+        { label: 'Estilo', value: 'Afro-Tech Orgánico · Ritmos Jungle · Deep House' },
+        { label: 'Sets', value: 'Apertura, hora punta o cierre' },
+        { label: 'Idiomas', value: 'Español e inglés' },
+        { label: 'Experiencia', value: 'Tres años y sumando' },
+        { label: 'Influencias', value: 'CARRILLO. B, HUGEL, Fred again.., Badbwoy' },
+      ],
+
+      soundTitle: 'Qué pincho',
+
+      historyTitle: 'Dónde he pinchado',
+      historyNote:
+        'Pistas de club, beach clubs, azoteas y salas privadas en tres países.',
+      experience: [
+        {
+          title: 'Noche madrileña',
+          body: 'Sets de club centrados en el público en Madrid, en salas como Icon y Shoko.',
+        },
+        {
+          title: 'Beach clubs, México',
+          body: 'Actuaciones de alta energía en la costa mexicana, sunset sessions incluidas.',
+        },
+        {
+          title: 'Rooftop series, EE. UU.',
+          body: 'Una fiesta en azotea y torneo deportivo: un set que abarcó del día a la noche.',
+        },
+        {
+          title: 'Eventos privados y fiestas en casa',
+          body: 'Sets versátiles construidos alrededor de los invitados, la sala y el guion del evento.',
+        },
+        {
+          title: 'Sunset Sessions',
+          body: 'Mezclas en directo al aire libre grabadas en exteriores y publicadas en YouTube — Afro-Tech y house orgánico con el ambiente natural incluido.',
+        },
+        {
+          title: 'YouTube',
+          body: 'Un canal en crecimiento con mezclas de varias horas y Sunset Sessions.',
+        },
+      ],
+
+      listenTitle: 'Escucha un set',
+      listenNote:
+        'Sets completos en lugar de clips — la forma más rápida de juzgar si encaja con tu sala.',
+
+      bioTitle: 'Biografía',
       shortBio: 'Biografía corta',
       longBio: 'Biografía completa',
       copyBio: 'Copiar biografía',
@@ -566,6 +664,8 @@ export const copy = {
       contactBlock: 'Contacto de reservas',
       altLine: 'Línea alternativa (EE. UU.)',
       socialBlock: 'Canales',
+      bookCta: 'Consultar una fecha',
+      bookNote: '¿Tienes una fecha en mente? Disponibilidad y precio real en menos de 24 horas.',
     },
 
     lab: {

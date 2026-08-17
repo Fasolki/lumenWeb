@@ -258,8 +258,8 @@ export default async function HomePage({
             <CTA href={`${base}/book`} size="lg">
               {t.hero.primaryCta}
             </CTA>
-            <CTA href={`${base}/epk`} variant="outline" size="lg">
-              {t.epk.title}
+            <CTA href={`${base}/info`} variant="outline" size="lg">
+              {t.nav.info}
             </CTA>
           </div>
         </div>

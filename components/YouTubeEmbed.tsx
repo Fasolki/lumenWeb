@@ -16,11 +16,19 @@ export function YouTubeEmbed({
   id,
   title,
   label,
+  caption,
   className,
 }: {
   id: string
+  /** Used for the iframe title and the play button's accessible name. */
   title: string
   label: string
+  /**
+   * Optional visible caption. Left off where a section heading already names
+   * the videos — YouTube poster frames usually carry the title in the artwork,
+   * so repeating one section heading across four cards is just noise.
+   */
+  caption?: string
   className?: string
 }) {
   const [active, setActive] = useState(false)
@@ -64,9 +72,11 @@ export function YouTubeEmbed({
           >
             <Play size={22} className="ml-0.5 fill-current" />
           </span>
-          <span className="absolute inset-x-0 bottom-0 p-5 text-left font-display text-lg font-bold tracking-tight">
-            {title}
-          </span>
+          {caption ? (
+            <span className="absolute inset-x-0 bottom-0 p-5 text-left font-display text-lg font-bold tracking-tight">
+              {caption}
+            </span>
+          ) : null}
         </button>
       )}
     </div>

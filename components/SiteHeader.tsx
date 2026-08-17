@@ -20,7 +20,7 @@ export function SiteHeader({ locale, t }: { locale: Locale; t: Copy }) {
     { href: `${base}/watch`, label: t.nav.sound },
     { href: `${base}/shows`, label: t.nav.shows },
     { href: `${base}/gallery`, label: t.nav.gallery },
-    { href: `${base}/epk`, label: t.nav.epk },
+    { href: `${base}/info`, label: t.nav.info },
   ]
 
   useEffect(() => {

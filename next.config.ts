@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
 
+  async redirects() {
+    return [
+      // This page used to live at /epk. Anything already handed out keeps
+      // working. Both the bare and locale-prefixed forms are covered, since
+      // the proxy adds the locale on its own pass.
+      { source: '/epk', destination: '/info', permanent: true },
+      { source: '/:lang(en|es)/epk', destination: '/:lang/info', permanent: true },
+    ]
+  },
+
   async headers() {
     return [
       {

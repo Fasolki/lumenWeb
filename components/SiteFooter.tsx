@@ -16,7 +16,7 @@ export function SiteFooter({ locale, t }: { locale: Locale; t: Copy }) {
     { href: `${base}/shows`, label: t.nav.shows },
     { href: `${base}/gallery`, label: t.nav.gallery },
     { href: `${base}/book`, label: t.nav.book },
-    { href: `${base}/epk`, label: t.nav.epk },
+    { href: `${base}/info`, label: t.nav.info },
   ]
 
   const channels = [

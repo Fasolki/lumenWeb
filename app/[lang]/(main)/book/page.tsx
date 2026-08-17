@@ -94,10 +94,10 @@ export default async function BookPage({
             data-reveal
             className="card-surface flex flex-col justify-center gap-6 rounded-[var(--radius-card)] p-9 sm:p-11"
           >
-            <p className="text-lg leading-relaxed text-haze">{t.book.epkNote}</p>
+            <p className="text-lg leading-relaxed text-haze">{t.book.infoNote}</p>
             <div>
-              <CTA href={`/${lang}/epk`} variant="outline">
-                {t.book.epkCta}
+              <CTA href={`/${lang}/info`} variant="outline">
+                {t.book.infoCta}
                 <ArrowRight size={16} aria-hidden />
               </CTA>
             </div>
