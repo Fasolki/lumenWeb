@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Third-party minified libraries vendored by Lab projects.
+    "public/lab/**/vendor/**",
   ]),
 ]);
 
