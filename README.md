@@ -86,6 +86,20 @@ For a self-contained HTML file (like the Tequila game):
 
 It appears on the Lab index and gets its own page with the project embedded.
 
+A project with several files (like Echo) gets its own folder instead:
+`public/lab/echo/index.html` with `file: 'echo/index.html'`.
+
+### Echo: adding the songs and the music video
+
+All of Echo's words and media slots are in `public/lab/echo/tracks.js`.
+
+- **Songs** — put the MP3s in `public/lab/echo/audio/` and set the matching
+  number in `ECHO_MEDIA.audio`, e.g. `1: 'audio/01-main-room.mp3'`. Tracks left
+  as `null` show an "Audio soon" placeholder.
+- **Music video** — in `ECHO_MEDIA.video`, set `youtubeId` (from the YouTube
+  link) *or* `file` (an MP4 in `public/lab/echo/video/`). With both `null` the
+  section shows the poster and "Premiering soon".
+
 ---
 
 ## How the two domains work

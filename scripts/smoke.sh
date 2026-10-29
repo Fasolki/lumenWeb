@@ -22,6 +22,8 @@ check "main" localhost /es/book
 check "main" localhost /en/lab
 check "main" localhost /en/lab/tequila
 check "main" localhost /lab/tequila.html
+check "main" localhost /en/lab/echo
+check "main" localhost /lab/echo/index.html
 check "main" localhost /opengraph-image
 check "main" localhost /sitemap.xml
 check "main" localhost /robots.txt
@@ -30,3 +32,6 @@ echo "--- lab host ---"
 check "lab" lab.lifeonfullvolume.com /
 check "lab" lab.lifeonfullvolume.com /tequila
 check "lab" lab.lifeonfullvolume.com /lab/tequila.html
+check "lab" lab.lifeonfullvolume.com /echo
+check "lab" lab.lifeonfullvolume.com /lab/echo/index.html
+check "lab" lab.lifeonfullvolume.com /lab/echo/img/gym-full.webp
