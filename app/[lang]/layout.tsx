@@ -114,8 +114,7 @@ export default async function RootLayout({
         {/*
           Vercel Web Analytics. Cookieless and with no cross-site identifiers,
           so it needs no consent banner under GDPR — which matters for a
-          Spain-based business. This layout is the root for the main site and
-          the lab, so both domains are covered.
+          Spain-based business. This layout is the root for every page.
         */}
         <Analytics />
       </body>
