@@ -47,6 +47,25 @@ export const projects: Project[] = [
     accent: '#FF5E3A',
     status: 'live',
   },
+  {
+    slug: 'echo',
+    title: 'ECHO',
+    blurb: {
+      en: 'A scroll-driven site for a fictional band’s debut album. It opens in a packed gym and fades to an empty one.',
+      es: 'Una web para el álbum debut de una banda ficticia. Empieza en un gimnasio lleno y termina en uno vacío.',
+    },
+    description: {
+      en: 'Room Tone, the debut by Echo, plays the band’s sound in reverse: full volume first, then everything strips away until one note rings out. The site does the same as you scroll. The colour drains, the crowd leaves, and the line “The room remembers” fades out letter by letter. Ten tracks with full lyrics, the artwork, and slots for the songs and the music video. A fictional band created for a Technology group project.',
+      es: 'Room Tone, el debut de Echo, recorre el sonido de la banda al revés: primero a todo volumen, luego todo se va apagando hasta que solo queda una nota resonando. La web hace lo mismo al hacer scroll. El color se apaga, el público se va y la frase “The room remembers” se desvanece letra a letra. Diez canciones con sus letras, el arte del álbum y espacio para las canciones y el videoclip. Una banda ficticia creada para un proyecto grupal de Tecnología.',
+    },
+    year: 2026,
+    language: 'en',
+    tags: ['Website', 'Music', 'Parallax'],
+    kind: 'embed',
+    file: 'echo/index.html',
+    accent: '#FF3EA5',
+    status: 'live',
+  },
 ]
 
 export function findProject(slug: string) {

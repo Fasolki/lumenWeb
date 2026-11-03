@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>ECHO — Room Tone</title>
+  <meta name="description" content="Echo's debut album Room Tone opens in a packed room at full volume and ends in an empty one. The room remembers." />
+  <meta name="theme-color" content="#0c0e12" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;500;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="img/gym-full.webp" />
+  <link rel="stylesheet" href="echo.css" />
+</head>
+<body class="is-loading">
+  <a class="skip" href="#tracks">Skip to the tracklist</a>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <header class="topbar">
+    <a class="wordmark" href="#top" aria-label="Echo, back to top">ECHO</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#story">Story</a>
+      <a href="#band">Band</a>
+      <a href="#album">Album</a>
+      <a href="#tracks">Tracks</a>
+      <a href="#video">Video</a>
+      <a href="#sound">Sound</a>
+    </nav>
+    <a class="back" href="/" hidden>← Lab</a>
+  </header>
+
+  <!-- Volume meter: drains as you scroll, like the songs do. -->
+  <aside class="meter" aria-hidden="true">
+    <div class="meter-bars"></div>
+    <span class="meter-label">VOL</span>
+  </aside>
+
+  <main>
+    <!-- 1 · MAIN ROOM -------------------------------------------------- -->
+    <section class="hero" id="top" aria-label="Echo — Room Tone">
+      <div class="hero-stage">
+        <div class="hero-media">
+          <img class="hero-img hero-full" src="img/gym-full.webp" alt="A packed school gym under pink, blue and gold stage lights, a basketball at center court." width="1254" height="1254" fetchpriority="high" />
+          <img class="hero-img hero-empty" src="img/gym-empty.webp" alt="" width="1254" height="1254" />
+        </div>
+        <div class="beams" aria-hidden="true">
+          <span class="beam b1"></span><span class="beam b2"></span><span class="beam b3"></span><span class="beam b4"></span>
+        </div>
+        <canvas class="confetti" aria-hidden="true"></canvas>
+        <div class="hero-shade" aria-hidden="true"></div>
+
+        <div class="hero-copy">
+          <p class="eyebrow hero-eyebrow">Room Tone · the debut album</p>
+          <h1 class="hero-title" data-echo="5">ECHO</h1>
+          <p class="hero-tag">The room remembers.</p>
+        </div>
+
+        <p class="hero-after" aria-hidden="true">…and then everyone goes home.</p>
+
+        <div class="scroll-cue" aria-hidden="true">
+          <span>Scroll to turn it down</span>
+          <i></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · STATEMENT --------------------------------------------------- -->
+    <section class="statement" aria-label="The sound">
+      <p class="statement-text" data-words>
+        Every Echo song opens at full volume, hook first, as if the room is already packed.
+        Then it strips away — the drums drop out, then the synths — until a single voice is left
+        ringing, fading into reverb.
+      </p>
+    </section>
+
+    <!-- 3 · STORY ------------------------------------------------------- -->
+    <section class="story" id="story" aria-labelledby="story-h">
+      <div class="story-media" aria-hidden="true">
+        <div class="story-frame">
+          <img src="img/band-1.webp" alt="" class="is-on" loading="lazy" />
+          <img src="img/band-2.webp" alt="" loading="lazy" />
+          <img src="img/band-3.webp" alt="" loading="lazy" />
+          <img src="img/band-4.webp" alt="" loading="lazy" />
+        </div>
+        <span class="story-count"><b>01</b> / 04</span>
+      </div>
+
+      <div class="story-text">
+        <p class="eyebrow">The story</p>
+        <h2 id="story-h" class="h2" data-echo="3">Born in a gym</h2>
+
+        <article class="chapter" data-chapter="0">
+          <p class="chapter-k">2022 · Lancaster</p>
+          <h3>The only room they could be loud in</h3>
+          <p>Four friends start rehearsing in a disused school gym — the only room the town would let them be loud in for free.</p>
+        </article>
+        <article class="chapter" data-chapter="1">
+          <p class="chapter-k">The tail</p>
+          <h3>What a sound leaves behind</h3>
+          <p>They grew up hearing that hall ring with bouncing basketballs, every dribble and buzzer echoing off the walls long after the game ended. That fading tail became their obsession.</p>
+        </article>
+        <article class="chapter" data-chapter="2">
+          <p class="chapter-k">The swimming baths</p>
+          <h3>The building sang back</h3>
+          <p>A video of the band playing in an empty swimming baths, the whole building ringing back at them, spreads online.</p>
+        </article>
+        <article class="chapter" data-chapter="3">
+          <p class="chapter-k">The festival</p>
+          <h3>The crowd finished the song</h3>
+          <p>On a small festival stage the crowd sings the final chorus so loudly that the band stops playing and lets them finish it.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4 · BAND -------------------------------------------------------- -->
+    <section class="band" id="band" aria-labelledby="band-h">
+      <div class="band-photo" aria-hidden="true">
+        <img src="img/band-4.webp" alt="" loading="lazy" />
+      </div>
+      <div class="band-inner">
+        <p class="eyebrow">The band</p>
+        <h2 id="band-h" class="h2" data-echo="3">Four voices, one room</h2>
+        <ul class="members">
+          <li class="member" style="--accent: var(--pink)">
+            <span class="member-n">01</span>
+            <h3>Tom</h3>
+            <p>Lead vocals, piano</p>
+            <small>The soaring, fragile voice that carries the hooks.</small>
+          </li>
+          <li class="member" style="--accent: var(--blue)">
+            <span class="member-n">02</span>
+            <h3>Sam</h3>
+            <p>Guitar</p>
+            <small>Bright, rhythmic guitar — half of the rock heart.</small>
+          </li>
+          <li class="member" style="--accent: var(--gold)">
+            <span class="member-n">03</span>
+            <h3>Jack</h3>
+            <p>Bass</p>
+            <small>The low end the whole floor jumps to.</small>
+          </li>
+          <li class="member" style="--accent: var(--off)">
+            <span class="member-n">04</span>
+            <h3>Maya</h3>
+            <p>Synths, production</p>
+            <small>Festival-sized drops and the long reverb tails.</small>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5 · ALBUM ------------------------------------------------------- -->
+    <section class="album" id="album" aria-labelledby="album-h">
+      <div class="album-pin">
+        <div class="record" aria-hidden="true">
+          <div class="vinyl"><span class="vinyl-label">ECHO<br /><small>Room Tone</small></span></div>
+          <div class="sleeve">
+            <img class="sleeve-front" src="img/gym-full.webp" alt="" loading="lazy" />
+            <img class="sleeve-back" src="img/gym-empty.webp" alt="" loading="lazy" />
+          </div>
+        </div>
+
+        <div class="album-text">
+          <p class="eyebrow">The debut album</p>
+          <h2 id="album-h" class="h2 album-title" data-echo="4">Room Tone</h2>
+          <p class="lede">The album plays the band's sound in reverse. It opens in a packed room at full volume and ends in an empty one.</p>
+          <p><em>Room tone</em> is the faint sound a space makes when nobody is in it. Sound engineers record it so a scene can feel whole. The album asks what we leave behind in the places we've been — and its answer is the echo.</p>
+          <p class="muted">Written as the band's rooms got bigger and louder, it's their proof that a moment lasts. Even when the crowd has gone, something stays in the room.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · TRACKLIST --------------------------------------------------- -->
+    <section class="tracks" id="tracks" aria-labelledby="tracks-h">
+      <header class="tracks-head">
+        <p class="eyebrow">Tracklist</p>
+        <h2 id="tracks-h" class="h2" data-echo="3">Ten rooms, loud to silent</h2>
+        <p class="muted">Each song strips back a little more. Open any track for its lyrics.</p>
+      </header>
+      <div class="acts" id="acts"><!-- built from tracks.js --></div>
+    </section>
+
+    <!-- 7 · VIDEO ------------------------------------------------------- -->
+    <section class="video" id="video" aria-labelledby="video-h">
+      <header class="video-head">
+        <p class="eyebrow">Music video</p>
+        <h2 id="video-h" class="h2" data-echo="3"></h2>
+        <p class="muted video-caption"></p>
+      </header>
+      <div class="screen" id="screen"><!-- built from tracks.js --></div>
+    </section>
+
+    <!-- 8 · VISUALS (horizontal) ---------------------------------------- -->
+    <section class="visuals" id="visuals" aria-labelledby="visuals-h">
+      <div class="visuals-pin">
+        <header class="visuals-head">
+          <p class="eyebrow">Artwork</p>
+          <h2 id="visuals-h" class="h2">Same room, full then empty</h2>
+        </header>
+        <div class="reel" tabindex="0" aria-label="Album artwork, scroll sideways">
+          <figure class="art"><img src="img/gym-full.webp" alt="Room Tone front cover: the gym, packed and lit." loading="lazy" /><figcaption><b>Room Tone</b> Front cover</figcaption></figure>
+          <figure class="art"><img src="img/gym-empty.webp" alt="Room Tone vinyl back: the same gym, empty, haze still hanging." loading="lazy" /><figcaption><b>Room Tone</b> Vinyl back</figcaption></figure>
+          <figure class="art"><img src="img/changing-room.webp" alt="Changing Room single art: a locker room with the stage glowing through the doorway." loading="lazy" /><figcaption><b>Changing Room</b> Lead single</figcaption></figure>
+          <figure class="art"><img src="img/hallway-lights.webp" alt="Hallway Lights single art: a long school corridor washed in pink and blue." loading="lazy" /><figcaption><b>Hallway Lights</b> Second single</figcaption></figure>
+          <figure class="art art-tall"><img src="img/poster.webp" alt="Room Tone tour poster: the packed gym with the line 'The room remembers'." loading="lazy" /><figcaption><b>Room Tone Tour</b> Poster</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 · SOUND ------------------------------------------------------- -->
+    <section class="sound" id="sound" aria-labelledby="sound-h">
+      <header>
+        <p class="eyebrow">The sound</p>
+        <h2 id="sound-h" class="h2" data-echo="3">When stadium rock met the dance floor</h2>
+        <p class="muted">The early-2010s festival-pop moment, when rock bands and dance producers shared the same passion.</p>
+      </header>
+      <ul class="refs">
+        <li class="ref" style="--accent: var(--gold)">
+          <span class="ref-year">2015</span>
+          <h3>Coldplay</h3>
+          <p class="ref-song">“Adventure of a Lifetime”</p>
+          <p>The sincere, communal chorus and bright rhythmic guitar — hooks written to be sung by a whole crowd.</p>
+        </li>
+        <li class="ref" style="--accent: var(--pink)">
+          <span class="ref-year">2013</span>
+          <h3>Ellie Goulding</h3>
+          <p class="ref-song">“Burn”</p>
+          <p>An airy, reverb-heavy vocal over a big, simple chorus — the model for Echo's long vocal tails.</p>
+        </li>
+        <li class="ref" style="--accent: var(--blue)">
+          <span class="ref-year">2011</span>
+          <h3>Avicii</h3>
+          <p class="ref-song">“Levels”</p>
+          <p>One melodic synth line carrying a whole festival, and the build-and-drop logic Echo's drops follow.</p>
+        </li>
+        <li class="ref" style="--accent: var(--off)">
+          <span class="ref-year">2011</span>
+          <h3>Calvin Harris</h3>
+          <p class="ref-song">“Feel So Close”</p>
+          <p>A steady, driving beat with a wistful vocal on top — the sadness hiding inside the dance floor.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 10 · ROOM TONE -------------------------------------------------- -->
+    <section class="finale" aria-label="The room remembers">
+      <div class="finale-stage">
+        <div class="finale-media" aria-hidden="true">
+          <img src="img/gym-empty.webp" alt="" loading="lazy" />
+          <span class="streak s1"></span><span class="streak s2"></span><span class="streak s3"></span>
+        </div>
+        <p class="finale-line" data-letters>The room remembers.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-mark">ECHO <span>·</span> Room Tone</p>
+    <p>A fictional band created for a Technology group project.</p>
+  </footer>
+
+  <!-- Lyrics sheet -->
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="sheet-inner" data-lenis-prevent>
+      <button class="sheet-close" type="button" aria-label="Close lyrics">✕</button>
+      <p class="eyebrow sheet-k"></p>
+      <h2 class="sheet-title" id="sheet-title"></h2>
+      <p class="sheet-about muted"></p>
+      <div class="sheet-lyrics"></div>
+    </div>
+  </dialog>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
+  <script src="vendor/lenis.min.js"></script>
+  <script src="tracks.js"></script>
+  <script src="echo.js"></script>
+</body>
+</html>
