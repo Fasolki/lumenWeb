@@ -1,16 +1,28 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
 import { site } from '@/content/site'
-import { SURFACE_HEADER } from '@/lib/headers'
 import { LOCALES, isLocale, matchLocale } from '@/lib/i18n'
 
 const LOCALE_COOKIE = 'lumen_locale'
 
 /**
+ * The Lab has moved to lab.vitaligiggy.com. Every request to the old lab host
+ * gets a permanent (308) redirect there; nothing is served from it any more.
+ */
+const NEW_LAB = 'https://lab.vitaligiggy.com'
+
+/** Where an old lab-host path lives on the new Lab. */
+function newLabUrl(pathname: string) {
+  const path = pathname.replace(/\/+$/, '') || '/'
+  if (path === '/echo' || path.startsWith('/echo/')) return `${NEW_LAB}/echo/`
+  if (path === '/tequila') return `${NEW_LAB}/fun/tequila`
+  return `${NEW_LAB}/`
+}
+
+/**
  * Two jobs:
  *
- *  1. Serve lab.lifeonfullvolume.com from the /lab route tree, with clean
- *     paths — the visitor sees /tequila, the app renders /en/lab/tequila.
+ *  1. Redirect lab.lifeonfullvolume.com to lab.vitaligiggy.com (see above).
  *  2. Make sure every main-site request carries a locale prefix, chosen from
  *     the visitor's cookie first and their Accept-Language header second.
  */
@@ -18,31 +30,17 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const host = request.headers.get('host')?.split(':')[0] ?? ''
 
+  // Any lab.* host counts, so the redirect can be tested locally with a
+  // Host header (see scripts/smoke.sh).
+  if (host === site.labHost || host.startsWith('lab.')) {
+    return NextResponse.redirect(newLabUrl(pathname), 308)
+  }
+
   const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value
   const locale =
     cookieLocale && isLocale(cookieLocale)
       ? cookieLocale
       : matchLocale(request.headers.get('accept-language'))
-
-  // Treat any *.lab host as the lab, so Vercel preview URLs work too.
-  const isLabHost = host === site.labHost || host.startsWith('lab.')
-
-  if (isLabHost) {
-    // Already rewritten (or someone typed the long form) — leave it alone.
-    if (LOCALES.some((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`))) {
-      return NextResponse.next()
-    }
-
-    const url = request.nextUrl.clone()
-    url.pathname = pathname === '/' ? `/${locale}/lab` : `/${locale}/lab${pathname}`
-
-    // Passed as a *request* header so server components can read it with
-    // headers() and emit short links (/tequila) instead of /en/lab/tequila.
-    const requestHeaders = new Headers(request.headers)
-    requestHeaders.set(SURFACE_HEADER, 'lab')
-
-    return NextResponse.rewrite(url, { request: { headers: requestHeaders } })
-  }
 
   const hasLocale = LOCALES.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`),
@@ -66,9 +64,17 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-      Everything except Next internals, the static asset folders and the
-      well-known metadata files, which must resolve at the root.
+      Main site: everything except Next internals, the static asset folders
+      and the well-known metadata files, which must resolve at the root.
     */
-    '/((?!_next/|images/|lab/|downloads/|favicon.ico|robots.txt|sitemap.xml|opengraph-image|.*\\.[\\w]+$).*)',
+    '/((?!_next/|images/|downloads/|favicon.ico|robots.txt|sitemap.xml|opengraph-image|.*\\.[\\w]+$).*)',
+    /*
+      Old lab host: every path, files included, so old links such as
+      /lab/tequila.html or /lab/echo/index.html redirect instead of 404ing.
+    */
+    {
+      source: '/:path*',
+      has: [{ type: 'header', key: 'host', value: '(?:lab\\..*)' }],
+    },
   ],
 }
