@@ -17,13 +17,6 @@ const nextConfig: NextConfig = {
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
         ],
       },
-      {
-        // Lab projects are immutable single files; let them cache hard.
-        source: '/lab/:file*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=3600, must-revalidate' },
-        ],
-      },
     ]
   },
 }
