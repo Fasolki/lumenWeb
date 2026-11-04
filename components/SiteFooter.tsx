@@ -94,13 +94,8 @@ export function SiteFooter({ locale, t }: { locale: Locale; t: Copy }) {
           <p>
             © {new Date().getFullYear()} {site.legalName}. {t.footer.rights}
           </p>
-          <a
-            href={site.labUrl}
-            className="transition hover:text-lumen"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t.footer.labLink}
+          <a href={site.offStageUrl} className="transition hover:text-lumen">
+            {t.footer.offStage} <span aria-hidden>→</span>
           </a>
         </div>
       </div>

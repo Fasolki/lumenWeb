@@ -5,11 +5,7 @@ The LÜMEN site. One Next.js codebase serving two domains:
 | Domain | What it serves |
 | --- | --- |
 | `lifeonfullvolume.com` | The DJ booking site |
-| `lab.lifeonfullvolume.com` | Side projects (the "Lab") |
-
-The split is deliberate. Bookers and promoters never land on the party games,
-and the games never dilute the booking pitch — but there is only one project to
-maintain, one design system and one deploy.
+| `lab.lifeonfullvolume.com` | A 308 redirect to `lab.vitaligiggy.com`, where the Lab now lives |
 
 Built with Next.js 16 (App Router), React 19, Tailwind v4 and TypeScript.
 
@@ -31,10 +27,10 @@ npm run dev          # http://localhost:3000
 | `npm run typecheck` | TypeScript, no emit |
 | `npm run images` | Convert new photos to WebP (see below) |
 
-To see the Lab on its own host locally, send the header:
+To check the old Lab host's redirect locally, send the header:
 
 ```bash
-curl -H "Host: lab.lifeonfullvolume.com" http://localhost:3000/
+curl -I -H "Host: lab.lifeonfullvolume.com" http://localhost:3000/tequila
 ```
 
 ---
@@ -49,7 +45,6 @@ curl -H "Host: lab.lifeonfullvolume.com" http://localhost:3000/
 | `content/site.ts` | Email, WhatsApp, socials, video IDs, venue list |
 | `content/gallery.ts` | Photo list, with alt text in both languages |
 | `content/gigs.ts` | Upcoming and past dates |
-| `content/projects.ts` | Lab projects |
 
 ### Adding a gig
 
@@ -76,30 +71,6 @@ instead of an empty list.
 
 Dimensions are required so the grid can reserve space and avoid layout shift.
 
-### Adding a Lab project
-
-For a self-contained HTML file (like the Tequila game):
-
-1. Put the file in `public/lab/`, e.g. `public/lab/mything.html`
-2. Add an entry to `content/projects.ts` with `kind: 'embed'` and
-   `file: 'mything.html'`
-
-It appears on the Lab index and gets its own page with the project embedded.
-
-A project with several files (like Echo) gets its own folder instead:
-`public/lab/echo/index.html` with `file: 'echo/index.html'`.
-
-### Echo: adding the songs and the music video
-
-All of Echo's words and media slots are in `public/lab/echo/tracks.js`.
-
-- **Songs** — put the MP3s in `public/lab/echo/audio/` and set the matching
-  number in `ECHO_MEDIA.audio`, e.g. `1: 'audio/01-main-room.mp3'`. Tracks left
-  as `null` show an "Audio soon" placeholder.
-- **Music video** — in `ECHO_MEDIA.video`, set `youtubeId` (from the YouTube
-  link) *or* `file` (an MP4 in `public/lab/echo/video/`). With both `null` the
-  section shows the poster and "Premiering soon".
-
 ---
 
 ## How the two domains work
@@ -110,10 +81,11 @@ All of Echo's words and media slots are in `public/lab/echo/tracks.js`.
    hitting `/` is redirected to their best match from their cookie, then their
    `Accept-Language` header. Both languages are separately indexable and
    cross-linked with `hreflang`.
-2. **Lab host rewriting.** On `lab.lifeonfullvolume.com`, `/` renders the Lab
-   index and `/tequila` renders that project — the `/en/lab` prefix is hidden.
-   Pages detect which host served them via a request header and generate short
-   or long links accordingly, so the same components work on both domains.
+2. **Old Lab host redirect.** The Lab moved to `lab.vitaligiggy.com`. Every
+   request to `lab.lifeonfullvolume.com` gets a permanent (308) redirect:
+   `/echo` and `/echo/*` → `/echo/`, `/tequila` → `/fun/tequila`, anything
+   else → `/`. The domain stays attached to this Vercel project so the
+   redirect keeps running.
 
 ---
 
@@ -129,7 +101,7 @@ Vercel, from this repo.
    - `lifeonfullvolume.com` → the A record Vercel gives you
    - `lab` → `CNAME` to `cname.vercel-dns.com`
 
-Both domains hit the same deployment; `proxy.ts` decides what each one renders.
+Both domains hit the same deployment; `proxy.ts` redirects the lab one.
 No second project, no second deploy.
 
 ---

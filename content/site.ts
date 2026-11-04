@@ -8,9 +8,10 @@ export const site = {
   brand: 'Life on Full Volume',
   domain: 'lifeonfullvolume.com',
   url: 'https://lifeonfullvolume.com',
-  labUrl: 'https://lab.lifeonfullvolume.com',
+  /** Vitali Giggy's personal site, linked quietly from the footer. */
+  offStageUrl: 'https://vitaligiggy.com',
 
-  /** Host that middleware rewrites onto the /lab route tree. */
+  /** Old Lab host. proxy.ts redirects all of it to lab.vitaligiggy.com. */
   labHost: 'lab.lifeonfullvolume.com',
 
   contact: {

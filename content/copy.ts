@@ -21,7 +21,6 @@ export const copy = {
       about: 'About',
       book: 'Book',
       epk: 'Press kit',
-      lab: 'Lab',
       menu: 'Menu',
       close: 'Close',
       language: 'Language',
@@ -266,19 +265,6 @@ export const copy = {
       socialBlock: 'Channels',
     },
 
-    lab: {
-      eyebrow: 'Lab',
-      title: 'Things I make when I am not playing',
-      subtitle:
-        'Small projects, games and experiments. Nothing here is serious, all of it works.',
-      backToMain: 'Back to LÜMEN',
-      openProject: 'Open',
-      launch: 'Launch',
-      fullscreen: 'Open fullscreen',
-      wip: 'In progress',
-      empty: 'Nothing published yet.',
-      builtBy: 'Made by LÜMEN',
-    },
 
     footer: {
       tagline: 'Life on Full Volume',
@@ -288,7 +274,7 @@ export const copy = {
       nav: 'Site',
       connect: 'Connect',
       rights: 'All rights reserved.',
-      labLink: 'Lab — side projects',
+      offStage: 'Off stage: Vitali Giggy',
     },
 
     common: {
@@ -320,7 +306,6 @@ export const copy = {
       about: 'Sobre mí',
       book: 'Reservar',
       epk: 'Press kit',
-      lab: 'Lab',
       menu: 'Menú',
       close: 'Cerrar',
       language: 'Idioma',
@@ -568,19 +553,6 @@ export const copy = {
       socialBlock: 'Canales',
     },
 
-    lab: {
-      eyebrow: 'Lab',
-      title: 'Cosas que hago cuando no estoy pinchando',
-      subtitle:
-        'Proyectos pequeños, juegos y experimentos. Nada de esto es serio, todo funciona.',
-      backToMain: 'Volver a LÜMEN',
-      openProject: 'Abrir',
-      launch: 'Lanzar',
-      fullscreen: 'Abrir a pantalla completa',
-      wip: 'En progreso',
-      empty: 'Todavía no hay nada publicado.',
-      builtBy: 'Hecho por LÜMEN',
-    },
 
     footer: {
       tagline: 'Life on Full Volume',
@@ -590,7 +562,7 @@ export const copy = {
       nav: 'Sitio',
       connect: 'Conectar',
       rights: 'Todos los derechos reservados.',
-      labLink: 'Lab — proyectos paralelos',
+      offStage: 'Fuera del escenario: Vitali Giggy',
     },
 
     common: {
